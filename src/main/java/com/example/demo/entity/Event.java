@@ -1,24 +1,31 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
+
 @Entity
 public class Event {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generate ID for the Event
     private Integer id;
+
     private String title;
     private String description;
     private String location;
     private String date;
 
+    // Default constructor
     public Event() {}
 
-    public Event(Integer id, String title, String description, String location, String date) {
-        this.id = id;
+    // Constructor with parameters
+    public Event(String title, String description, String location, String date) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.date = date;
     }
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }

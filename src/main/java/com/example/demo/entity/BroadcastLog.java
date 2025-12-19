@@ -1,20 +1,27 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
+
 @Entity
 public class BroadcastLog {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
     private Integer id;
+
     private Integer eventId;
     private String message;
 
+    // Default constructor
     public BroadcastLog() {}
 
-    public BroadcastLog(Integer id, Integer eventId, String message) {
-        this.id = id;
+    // Constructor with parameters
+    public BroadcastLog(Integer eventId, String message) {
         this.eventId = eventId;
         this.message = message;
     }
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
