@@ -1,32 +1,37 @@
 package com.example.demo.service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.EventUpdate;
+import com.example.demo.repository.EventUpdateRepository;
 
 @Service
 public class EventUpdateServiceImpl implements EventUpdateService {
 
-    private Map<Integer, EventUpdate> updates = new HashMap<>();
+    @Autowired
+    private EventUpdateRepository eventUpdateRepository;
 
     @Override
     public EventUpdate save(EventUpdate update) {
-        updates.put(update.getId(), update);
-        return update;
+        return eventUpdateRepository.save(update);
     }
 
     @Override
     public List<EventUpdate> getAll() {
-        return new ArrayList<>(updates.values());
+        return eventUpdateRepository.findAll();
     }
 
     @Override
     public Optional<EventUpdate> getById(Integer id) {
-        return Optional.ofNullable(updates.get(id));
+        return eventUpdateRepository.findById(id);
     }
 
     @Override
     public void delete(Integer id) {
-        updates.remove(id);
+        eventUpdateRepository.deleteById(id);
     }
 }
