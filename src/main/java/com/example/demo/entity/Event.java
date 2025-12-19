@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
+@Entity
 public class Event {
-
+    @Id
     private Integer id;
     private String title;
     private String description;
