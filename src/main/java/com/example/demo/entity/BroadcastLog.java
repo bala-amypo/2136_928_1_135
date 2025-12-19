@@ -1,17 +1,17 @@
 package com.example.demo.entity;
 
-public class EventUpdate {
+public class BroadcastLog {
 
     private Integer id;
     private Integer eventId;
-    private String updateMessage;
+    private String message;
 
-    public EventUpdate() {}
+    public BroadcastLog() {}
 
-    public EventUpdate(Integer id, Integer eventId, String updateMessage) {
+    public BroadcastLog(Integer id, Integer eventId, String message) {
         this.id = id;
         this.eventId = eventId;
-        this.updateMessage = updateMessage;
+        this.message = message;
     }
 
     public Integer getId() {
@@ -30,11 +30,11 @@ public class EventUpdate {
         this.eventId = eventId;
     }
 
-    public String getUpdateMessage() {
-        return updateMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setUpdateMessage(String updateMessage) {
-        this.updateMessage = updateMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
