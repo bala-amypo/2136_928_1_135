@@ -1,15 +1,15 @@
 package com.example.demo.entity;
 
-public class Userentity {
+public class User {
 
     private Integer id;
     private String username;
     private String password;
     private String role;
 
-    public Userentity() {}
+    public User() {}
 
-    public Userentity(Integer id, String username, String password, String role) {
+    public User(Integer id, String username, String password, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
