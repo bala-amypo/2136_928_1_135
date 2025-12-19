@@ -1,28 +1,37 @@
 package com.example.demo.service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    Map<Integer, User> users = new HashMap<>();
+    @Autowired
+    private UserRepository userRepository;
 
+    @Override
     public User save(User user) {
-        users.put(user.getId(), user);
-        return user;
+        return userRepository.save(user); // ✅ SAVES TO MYSQL
     }
 
+    @Override
     public List<User> getAll() {
-        return new ArrayList<>(users.values());
+        return userRepository.findAll();
     }
 
+    @Override
     public Optional<User> getById(Integer id) {
-        return Optional.ofNullable(users.get(id));
+        return userRepository.findById(id);
     }
 
+    @Override
     public void delete(Integer id) {
-        users.remove(id);
+        userRepository.deleteById(id);
     }
 }
