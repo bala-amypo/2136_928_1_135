@@ -1,20 +1,26 @@
 package com.example.demo.service;
 
-import java.util.*;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.Subscription;
+import com.example.demo.repository.SubscriptionRepository;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    List<Subscription> subs = new ArrayList<>();
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
+    @Override
     public Subscription subscribe(Subscription sub) {
-        subs.add(sub);
-        return sub;
+        return subscriptionRepository.save(sub);
     }
 
+    @Override
     public List<Subscription> getAll() {
-        return subs;
+        return subscriptionRepository.findAll();
     }
 }
