@@ -6,12 +6,13 @@ import jakarta.persistence.*;
 public class EventUpdate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generate ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
     private Integer id;
 
+    // Assuming eventId should be a reference to the Event entity
     @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "id") // Set foreign key relation with Event
-    private Event event;
+    @JoinColumn(name = "eventId", referencedColumnName = "id", nullable = false) // Foreign key to Event
+    private Event event; // Event entity reference
 
     private String updateMessage;
 
@@ -19,12 +20,12 @@ public class EventUpdate {
     public EventUpdate() {}
 
     // Constructor with parameters
-    public EventUpdate(Integer eventId, String updateMessage) {
-        this.eventId = eventId;
+    public EventUpdate(Event event, String updateMessage) {
+        this.event = event;
         this.updateMessage = updateMessage;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -33,12 +34,12 @@ public class EventUpdate {
         this.id = id;
     }
 
-    public Integer getEventId() {
-        return event != null ? event.getId() : null; // Get eventId from associated Event entity
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public String getUpdateMessage() {
@@ -49,3 +50,4 @@ public class EventUpdate {
         this.updateMessage = updateMessage;
     }
 }
+    
