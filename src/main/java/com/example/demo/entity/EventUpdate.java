@@ -1,20 +1,30 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
+
 @Entity
 public class EventUpdate {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generate ID
     private Integer id;
-    private Integer eventId;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "id") // Set foreign key relation with Event
+    private Event event;
+
     private String updateMessage;
 
+    // Default constructor
     public EventUpdate() {}
 
-    public EventUpdate(Integer id, Integer eventId, String updateMessage) {
-        this.id = id;
+    // Constructor with parameters
+    public EventUpdate(Integer eventId, String updateMessage) {
         this.eventId = eventId;
         this.updateMessage = updateMessage;
     }
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -24,7 +34,7 @@ public class EventUpdate {
     }
 
     public Integer getEventId() {
-        return eventId;
+        return event != null ? event.getId() : null; // Get eventId from associated Event entity
     }
 
     public void setEventId(Integer eventId) {

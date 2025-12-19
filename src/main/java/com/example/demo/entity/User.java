@@ -1,26 +1,27 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
 
-
 @Entity
-
 public class User {
     @Id
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generates ID
     private Integer id;
+
     private String username;
     private String password;
     private String role;
 
+    // Default constructor
     public User() {}
 
-    public User(Integer id, String username, String password, String role) {
-        this.id = id;
+    // Constructor with parameters
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
