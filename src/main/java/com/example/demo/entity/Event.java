@@ -1,5 +1,5 @@
 package com.example.demo.entity;
-
+import jakarta.persistence.*;
 public class Event {
 
     private Integer id;
