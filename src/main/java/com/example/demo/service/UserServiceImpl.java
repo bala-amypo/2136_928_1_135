@@ -1,24 +1,46 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private Map<Integer, User> users = new HashMap<>();
 
     @Override
     public User save(User user) {
 
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+        // Duplicate Email Check
+        for (User u : users.values()) {
+            if (u.getEmail().equals(user.getEmail())) {
+                throw new IllegalArgumentException("Email already exists");
+            }
         }
 
-        return userRepository.save(user);
+        users.put(user.getId(), user);
+        return user;
+    }
+
+    @Override
+    public List<User> getAll() {
+        return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public User getById(Integer id) {
+        if (!users.containsKey(id)) {
+            throw new RuntimeException("User not found");
+        }
+        return users.get(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        if (!users.containsKey(id)) {
+            throw new RuntimeException("User not found");
+        }
+        users.remove(id);
     }
 }
