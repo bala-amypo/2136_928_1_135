@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Event;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventRepository;
 
 @Service
@@ -26,12 +26,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Optional<Event> getById(Integer id) {
-        return eventRepository.findById(id);
+    public Event getById(Integer id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
     }
 
     @Override
     public void delete(Integer id) {
+        if (!eventRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Event not found");
+        }
         eventRepository.deleteById(id);
     }
 }

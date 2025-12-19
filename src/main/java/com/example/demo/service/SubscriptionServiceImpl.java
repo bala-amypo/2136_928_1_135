@@ -16,6 +16,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription subscribe(Subscription sub) {
+
+        if (subscriptionRepository.existsByUserIdAndEventId(
+                sub.getUserId(), sub.getEventId())) {
+
+            throw new IllegalArgumentException("Already subscribed");
+        }
+
         return subscriptionRepository.save(sub);
     }
 
