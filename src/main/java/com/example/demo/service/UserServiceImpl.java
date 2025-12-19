@@ -17,21 +17,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return userRepository.save(user); // ✅ SAVES TO MYSQL
+        return userRepository.save(user); // Saves to MySQL
     }
 
     @Override
     public List<User> getAll() {
-        return userRepository.findAll();
+        return userRepository.findAll(); // Fetches all users
     }
 
     @Override
     public Optional<User> getById(Integer id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id); // Fetch single user by ID
     }
 
     @Override
     public void delete(Integer id) {
-        userRepository.deleteById(id);
+        userRepository.deleteById(id); // Deletes user
     }
 }

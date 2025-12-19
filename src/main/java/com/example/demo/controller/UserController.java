@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
@@ -11,26 +14,25 @@ import com.example.demo.service.UserService;
 public class UserController {
 
     @Autowired
-    UserService service;
+    private UserService userService;
 
-    @PostMapping("/add")
-    public User add(@RequestBody User user) {
-        return service.save(user);
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return userService.save(user);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<User> getAll() {
-        return service.getAll();
+        return userService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> get(@PathVariable Integer id) {
-        return service.getById(id);
+    public Optional<User> getById(@PathVariable Integer id) {
+        return userService.getById(id);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
-        service.delete(id);
-        return "Deleted";
+    public void delete(@PathVariable Integer id) {
+        userService.delete(id);
     }
 }
