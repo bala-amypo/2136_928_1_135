@@ -54,6 +54,13 @@
             <version>2.3.0</version>
         </dependency>
 
+        <!-- JPA API (if needed for javax.persistence) -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
