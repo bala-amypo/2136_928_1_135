@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,4 +19,19 @@ public class EventServiceImpl implements EventService {
     public Optional<Event> getById(Integer id) {
         return eventRepository.findById(id);
     }
+
+    @Override
+    public List<Event> getAll() {
+        return eventRepository.findAll();
+    }
+
+    @Override
+    public void delete(Integer id) {
+        eventRepository.deleteById(id);
+    }
+    @Override
+public void delete(Integer id) {
+    userRepository.deleteById(id);
+}
+
 }
