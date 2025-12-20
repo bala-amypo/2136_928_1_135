@@ -28,7 +28,7 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     @Override
     public EventUpdate getById(Integer id) {
         return eventUpdateRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event update not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
     }
 
     @Override
