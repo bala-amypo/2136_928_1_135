@@ -9,7 +9,7 @@ public interface UserService {
     User save(User user);
 
     List<User> getAll();          // ✅ ADD
-    Optional<User> getById(Integer id); // ✅ ADD
+    User getById(Integer id); // ✅ ADD
 
     void delete(Integer id);
 }

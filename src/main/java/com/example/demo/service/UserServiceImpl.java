@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 
 @Service
@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
 
-        // ✅ STEP-2: Duplicate Email Check
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -31,9 +30,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    // ✅ FIXED METHOD
     @Override
-    public Optional<User> getById(Integer id) {
-        return userRepository.findById(id);
+    public User getById(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 
     @Override
