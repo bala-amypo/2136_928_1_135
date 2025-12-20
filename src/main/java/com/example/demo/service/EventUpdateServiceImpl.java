@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.EventUpdate;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventUpdateRepository;
 
 @Service
@@ -25,9 +25,12 @@ public class EventUpdateServiceImpl implements EventUpdateService {
         return eventUpdateRepository.findAll();
     }
 
+    // ✅ FIXED
     @Override
-    public Optional<EventUpdate> getById(Integer id) {
-        return eventUpdateRepository.findById(id);
+    public EventUpdate getById(Integer id) {
+        return eventUpdateRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Event update not found"));
     }
 
     @Override
