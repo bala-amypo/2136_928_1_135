@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +27,9 @@ public class EventUpdateController {
         return service.getAll();
     }
 
-    // GET update by id
+    // ✅ FIXED: GET update by id
     @GetMapping("/{id}")
-    public Optional<EventUpdate> getUpdateById(@PathVariable Integer id) {
+    public EventUpdate getUpdateById(@PathVariable Integer id) {
         return service.getById(id);
     }
 
