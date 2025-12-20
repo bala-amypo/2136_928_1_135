@@ -17,6 +17,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+
+        // ✅ STEP-2: Duplicate Email Check
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
         return userRepository.save(user);
     }
 
