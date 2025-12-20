@@ -5,8 +5,12 @@ import java.util.Optional;
 import com.example.demo.entity.Event;
 
 public interface EventService {
+
     Event save(Event event);
-    List<Event> getAll();
+
     Optional<Event> getById(Integer id);
+
+    List<Event> getAll();
+
     void delete(Integer id);
 }

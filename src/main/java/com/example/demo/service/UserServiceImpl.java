@@ -14,11 +14,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-
         return userRepository.save(user);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        userRepository.deleteById(id);
     }
 }
