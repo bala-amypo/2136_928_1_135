@@ -25,16 +25,15 @@ public class EventUpdateServiceImpl implements EventUpdateService {
         return eventUpdateRepository.findAll();
     }
 
-    // ✅ FIXED
     @Override
     public EventUpdate getById(Integer id) {
         return eventUpdateRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event update not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event update not found"));
     }
 
     @Override
     public void delete(Integer id) {
-        eventUpdateRepository.deleteById(id);
+        EventUpdate existing = getById(id);  // Ensure it exists, otherwise throws exception
+        eventUpdateRepository.delete(existing);
     }
 }

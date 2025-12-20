@@ -27,7 +27,7 @@ public class EventUpdateController {
         return service.getAll();
     }
 
-    // ✅ FIXED: GET update by id
+    // GET update by id
     @GetMapping("/{id}")
     public EventUpdate getUpdateById(@PathVariable Integer id) {
         return service.getById(id);
