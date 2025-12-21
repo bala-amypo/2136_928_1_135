@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.Subscription;
 import com.example.demo.service.SubscriptionService;
 
@@ -11,11 +13,12 @@ import com.example.demo.service.SubscriptionService;
 public class SubscriptionController {
 
     @Autowired
-    SubscriptionService service;
+    private SubscriptionService service;
 
+    // Subscribe using userId and eventId
     @PostMapping("/add")
-    public Subscription subscribe(@RequestBody Subscription sub) {
-        return service.subscribe(sub);
+    public Subscription subscribe(@RequestParam Long userId, @RequestParam Long eventId) {
+        return service.subscribe(userId, eventId);
     }
 
     @GetMapping("/all")

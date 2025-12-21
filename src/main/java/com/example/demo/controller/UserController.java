@@ -27,12 +27,12 @@ public class UserController {
 
     // ✅ FIXED
     @GetMapping("/{id}")
-    public User getById(@PathVariable Integer id) {
+    public User getById(@PathVariable Long id) {
         return userService.getById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         userService.delete(id);
     }
 }

@@ -11,7 +11,7 @@ import com.example.demo.service.BroadcastService;
 public class BroadcastController {
 
     @Autowired
-    BroadcastService service;
+    private BroadcastService service;
 
     @PostMapping("/send")
     public BroadcastLog send(@RequestBody BroadcastLog log) {
@@ -21,5 +21,14 @@ public class BroadcastController {
     @GetMapping("/all")
     public List<BroadcastLog> getAll() {
         return service.getAll();
+    }
+
+    // Optional: Get broadcast log by ID
+    @GetMapping("/{id}")
+    public BroadcastLog getById(@PathVariable Long id) {
+        return service.getAll().stream()
+                .filter(log -> log.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("BroadcastLog not found"));
     }
 }
