@@ -1,66 +1,108 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Table(name = "user") 
+@Table(
+    name = "users",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+    }
+)
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generates ID
-    private Integer id;
 
-    private String username;
-    private String password;
-    private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;   // Long is recommended
+
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    // Default constructor
-    public User() {}
+    private String password;
 
-    // Constructor with parameters
-    public User(String username, String password, String role,String email) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.email=email;
+    // ADMIN / PUBLISHER / SUBSCRIBER
+    private String role;
+
+    private Timestamp createdAt;
+
+    // Auto-generate createdAt
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
-    public Integer getId() {
+    /* ===================== RELATIONSHIPS ===================== */
+
+    // One publisher -> Many events
+    @OneToMany(mappedBy = "publisher")
+    private List<Event> events;
+
+    // One user -> Many subscriptions
+    @OneToMany(mappedBy = "user")
+    private List<Subscription> subscriptions;
+
+    // One user -> Many broadcast logs
+    @OneToMany(mappedBy = "subscriber")
+    private List<BroadcastLog> broadcastLogs;
+
+    /* ===================== CONSTRUCTORS ===================== */
+
+    public User() {}
+
+    public User(String fullName, String email, String password, String role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    /* ===================== GETTERS & SETTERS ===================== */
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+ 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+ 
+    public String getRole() {
+        return role;
+    }
+ 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 }
