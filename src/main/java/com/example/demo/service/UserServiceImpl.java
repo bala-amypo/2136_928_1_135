@@ -17,11 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-
         return userRepository.save(user);
     }
 
@@ -30,16 +28,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    // ✅ FIXED METHOD
     @Override
-    public User getById(Integer id) {
+    public User getById(Long id) {   // ✅ Long
         return userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {    // ✅ Long
         userRepository.deleteById(id);
     }
 }
