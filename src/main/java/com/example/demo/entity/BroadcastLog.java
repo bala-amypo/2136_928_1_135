@@ -1,49 +1,79 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "broadcasts") 
+@Table(name = "broadcasts")
 public class BroadcastLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Integer eventId;
-    private String message;
+    // Many logs -> one event update
+    @ManyToOne
+    @JoinColumn(name = "event_update_id", nullable = false)
+    private EventUpdate eventUpdate;
 
-    // Default constructor
+    // Many logs -> one subscriber (User)
+    @ManyToOne
+    @JoinColumn(name = "subscriber_id", nullable = false)
+    private User subscriber;
+
+    // PENDING / SENT / FAILED
+    private String deliveryStatus;
+
+    private Timestamp sentAt;
+
+    // Constructors
     public BroadcastLog() {}
 
-    // Constructor with parameters
-    public BroadcastLog(Integer eventId, String message) {
-        this.eventId = eventId;
-        this.message = message;
+    public BroadcastLog(EventUpdate eventUpdate, User subscriber, String deliveryStatus) {
+        this.eventUpdate = eventUpdate;
+        this.subscriber = subscriber;
+        this.deliveryStatus = deliveryStatus;
+        this.sentAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
-    public Integer getId() {
+    // Getters & Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getEventId() {
-        return eventId;
+    public EventUpdate getEventUpdate() {
+        return eventUpdate;
     }
 
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
+    public void setEventUpdate(EventUpdate eventUpdate) {
+        this.eventUpdate = eventUpdate;
     }
 
-    public String getMessage() {
-        return message;
+    public User getSubscriber() {
+        return subscriber;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setSubscriber(User subscriber) {
+        this.subscriber = subscriber;
+    }
+
+    public String getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(String deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public Timestamp getSentAt() {
+        return sentAt;
+    }
+
+    public void setSentAt(Timestamp sentAt) {
+        this.sentAt = sentAt;
     }
 }
