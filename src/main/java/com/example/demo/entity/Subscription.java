@@ -16,25 +16,25 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many subscriptions -> one user
+    
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Many subscriptions -> one event
+    
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     private Timestamp subscribedAt;
 
-    // Auto-generate subscribedAt
+    
     @PrePersist
     protected void onCreate() {
         this.subscribedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Constructors
+    
     public Subscription() {}
 
     public Subscription(User user, Event event) {
@@ -42,7 +42,7 @@ public class Subscription {
         this.event = event;
     }
 
-    // Getters & Setters
+    
     public Long getId() {
         return id;
     }

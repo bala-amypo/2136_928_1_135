@@ -21,7 +21,7 @@ public class Event {
 
     private String category;
 
-    // Many events -> one publisher (User)
+    
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
@@ -30,7 +30,7 @@ public class Event {
 
     private Timestamp createdAt;
 
-    // Auto-generate createdAt and default isActive
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Timestamp(System.currentTimeMillis());
@@ -39,15 +39,15 @@ public class Event {
         }
     }
 
-    // One event -> many updates
+    
     @OneToMany(mappedBy = "event")
     private List<EventUpdate> updates;
 
-    // One event -> many subscriptions
+    
     @OneToMany(mappedBy = "event")
     private List<Subscription> subscriptions;
 
-    // Constructors
+    
     public Event() {}
 
     public Event(String title, String description, String location, String category, User publisher) {
@@ -58,7 +58,7 @@ public class Event {
         this.publisher = publisher;
     }
 
-    // Getters & Setters
+    
     public Long getId() {
         return id;
     }

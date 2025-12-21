@@ -12,7 +12,7 @@ public class EventUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many updates -> one event
+    
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
@@ -20,22 +20,22 @@ public class EventUpdate {
     @Column(length = 1000)
     private String updateContent;
 
-    // INFO / WARNING / CRITICAL
+    
     private String updateType;
 
     private Timestamp postedAt;
 
-    // Auto-generate postedAt
+    
     @PrePersist
     protected void onCreate() {
         this.postedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // One update -> many broadcast logs
+    
     @OneToMany(mappedBy = "eventUpdate")
     private List<BroadcastLog> broadcastLogs;
 
-    // Constructors
+    
     public EventUpdate() {}
 
     public EventUpdate(Event event, String updateContent, String updateType) {
@@ -44,7 +44,7 @@ public class EventUpdate {
         this.updateType = updateType;
     }
 
-    // Getters & Setters
+    
     public Long getId() {
         return id;
     }

@@ -23,7 +23,7 @@ public class BroadcastController {
         return service.getAll();
     }
 
-    // Optional: Get broadcast log by ID
+    
     @GetMapping("/{id}")
     public BroadcastLog getById(@PathVariable Long id) {
         return service.getAll().stream()

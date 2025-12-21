@@ -11,22 +11,22 @@ public class BroadcastLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many logs -> one event update
+    
     @ManyToOne
     @JoinColumn(name = "event_update_id", nullable = false)
     private EventUpdate eventUpdate;
 
-    // Many logs -> one subscriber (User)
+    
     @ManyToOne
     @JoinColumn(name = "subscriber_id", nullable = false)
     private User subscriber;
 
-    // PENDING / SENT / FAILED
+    
     private String deliveryStatus;
 
     private Timestamp sentAt;
 
-    // Constructors
+    
     public BroadcastLog() {}
 
     public BroadcastLog(EventUpdate eventUpdate, User subscriber, String deliveryStatus) {

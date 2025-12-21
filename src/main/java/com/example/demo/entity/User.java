@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;   // Long is recommended
+    private Long id;   
 
     private String fullName;
 
@@ -24,24 +24,24 @@ public class User {
 
     private String password;
 
-    // ADMIN / PUBLISHER / SUBSCRIBER
+    
     private String role;
 
     private Timestamp createdAt;
 
-    // Auto-generate createdAt
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    /* ===================== RELATIONSHIPS ===================== */
+    
 
-    // One publisher -> Many events
+    
     @OneToMany(mappedBy = "publisher")
     private List<Event> events;
 
-    // One user -> Many subscriptions
+    
     @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
 

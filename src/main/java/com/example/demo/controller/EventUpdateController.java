@@ -15,25 +15,25 @@ public class EventUpdateController {
     @Autowired
     private EventUpdateService service;
 
-    // CREATE event update with eventId
+    
     @PostMapping("/add")
     public EventUpdate addUpdate(@RequestParam Long eventId, @RequestBody EventUpdate update) {
         return service.save(eventId, update);
     }
 
-    // GET all updates
+    
     @GetMapping("/all")
     public List<EventUpdate> getAllUpdates() {
         return service.getAll();
     }
 
-    // GET update by id
+    
     @GetMapping("/{id}")
     public EventUpdate getUpdateById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    // DELETE update
+    
     @DeleteMapping("/{id}")
     public String deleteUpdate(@PathVariable Long id) {
         service.delete(id);

@@ -15,7 +15,7 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService service;
 
-    // Subscribe using userId and eventId
+    
     @PostMapping("/add")
     public Subscription subscribe(@RequestParam Long userId, @RequestParam Long eventId) {
         return service.subscribe(userId, eventId);
