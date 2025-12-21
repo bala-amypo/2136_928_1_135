@@ -1,37 +1,55 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Table(name = "event-updates") 
+@Table(name = "event_updates")
 public class EventUpdate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Assuming eventId should be a reference to the Event entity
+    // Many updates -> one event
     @ManyToOne
-    @JoinColumn(name = "eventId", referencedColumnName = "id", nullable = false) // Foreign key to Event
-    private Event event; // Event entity reference
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
-    private String updateMessage;
+    @Column(length = 1000)
+    private String updateContent;
 
-    // Default constructor
-    public EventUpdate() {}
+    // INFO / WARNING / CRITICAL
+    private String updateType;
 
-    // Constructor with parameters
-    public EventUpdate(Event event, String updateMessage) {
-        this.event = event;
-        this.updateMessage = updateMessage;
+    private Timestamp postedAt;
+
+    // Auto-generate postedAt
+    @PrePersist
+    protected void onCreate() {
+        this.postedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and setters
-    public Integer getId() {
+    // One update -> many broadcast logs
+    @OneToMany(mappedBy = "eventUpdate")
+    private List<BroadcastLog> broadcastLogs;
+
+    // Constructors
+    public EventUpdate() {}
+
+    public EventUpdate(Event event, String updateContent, String updateType) {
+        this.event = event;
+        this.updateContent = updateContent;
+        this.updateType = updateType;
+    }
+
+    // Getters & Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,12 +61,23 @@ public class EventUpdate {
         this.event = event;
     }
 
-    public String getUpdateMessage() {
-        return updateMessage;
+    public String getUpdateContent() {
+        return updateContent;
     }
 
-    public void setUpdateMessage(String updateMessage) {
-        this.updateMessage = updateMessage;
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    public String getUpdateType() {
+        return updateType;
+    }
+
+    public void setUpdateType(String updateType) {
+        this.updateType = updateType;
+    }
+
+    public Timestamp getPostedAt() {
+        return postedAt;
     }
 }
-    

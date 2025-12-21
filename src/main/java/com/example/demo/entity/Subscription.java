@@ -1,49 +1,73 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "subscriptions") 
+@Table(
+    name = "subscriptions",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "event_id"})
+    }
+)
 public class Subscription {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Automatically generate ID
-    private Integer id;
-    
-    private Integer userId;
-    private Integer eventId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Default constructor
-    public Subscription() {}
+    // Many subscriptions -> one user
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    // Constructor with parameters
-    public Subscription(Integer userId, Integer eventId) {
-        this.userId = userId;
-        this.eventId = eventId;
+    // Many subscriptions -> one event
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
+
+    private Timestamp subscribedAt;
+
+    // Auto-generate subscribedAt
+    @PrePersist
+    protected void onCreate() {
+        this.subscribedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
-    public Integer getId() {
+    // Constructors
+    public Subscription() {}
+
+    public Subscription(User user, Event event) {
+        this.user = user;
+        this.event = event;
+    }
+
+    // Getters & Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
+    }
+ 
+    public void setUser(User user) {
+        this.user = user;
+    }
+ 
+    public Event getEvent() {
+        return event;
+    }
+ 
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
+    public Timestamp getSubscribedAt() {
+        return subscribedAt;
     }
 }
