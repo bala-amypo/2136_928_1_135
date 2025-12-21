@@ -5,7 +5,7 @@ import com.example.demo.entity.Subscription;
 
 public interface SubscriptionService {
 
-    Subscription subscribe(Subscription sub);
+    Subscription subscribe(Long userId, Long eventId);
 
     List<Subscription> getAll();
 }
