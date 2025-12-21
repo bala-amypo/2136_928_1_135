@@ -4,8 +4,8 @@ import java.util.List;
 import com.example.demo.entity.EventUpdate;
 
 public interface EventUpdateService {
-    EventUpdate save(EventUpdate update);
+    EventUpdate save(Long eventId, EventUpdate update);  // changed from Integer to Long
     List<EventUpdate> getAll();
-    EventUpdate getById(Integer id);  // Return EventUpdate directly
-    void delete(Integer id);
+    EventUpdate getById(Long id);  // changed from Integer to Long
+    void delete(Long id);           // changed from Integer to Long
 }

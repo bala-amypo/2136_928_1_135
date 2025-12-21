@@ -8,9 +8,9 @@ public interface EventService {
 
     Event save(Event event);
 
-    Optional<Event> getById(Integer id);
+    Optional<Event> getById(Long id);  // changed from Integer to Long
 
     List<Event> getAll();
 
-    void delete(Integer id);
+    void delete(Long id);  // changed from Integer to Long
 }
