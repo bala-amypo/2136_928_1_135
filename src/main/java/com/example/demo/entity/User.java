@@ -45,11 +45,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
 
-    // One user -> Many broadcast logs
+    
     @OneToMany(mappedBy = "subscriber")
     private List<BroadcastLog> broadcastLogs;
 
-    /* ===================== CONSTRUCTORS ===================== */
 
     public User() {}
 
@@ -60,7 +59,6 @@ public class User {
         this.role = role;
     }
 
-    /* ===================== GETTERS & SETTERS ===================== */
 
     public Long getId() {
         return id;

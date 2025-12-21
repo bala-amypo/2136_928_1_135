@@ -21,7 +21,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Optional<Event> getById(Long id) {  // Long here
+    public Optional<Event> getById(Long id) {  
         return eventRepository.findById(id);
     }
 
@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void delete(Long id) {  // Long here
+    public void delete(Long id) {  
         eventRepository.deleteById(id);
     }
 }

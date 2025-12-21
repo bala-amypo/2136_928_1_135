@@ -29,14 +29,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(Long id) {   // ✅ Long
+    public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }
 
     @Override
-    public void delete(Long id) {    // ✅ Long
+    public void delete(Long id) {    
         userRepository.deleteById(id);
     }
 }

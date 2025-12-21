@@ -9,7 +9,7 @@ public interface UserService {
 
     List<User> getAll();
 
-    User getById(Long id);     // ✅ Long
+    User getById(Long id);     
 
-    void delete(Long id);      // ✅ Long
+    void delete(Long id);      
 }

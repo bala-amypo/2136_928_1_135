@@ -21,7 +21,7 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     private EventRepository eventRepository;
 
     @Override
-    public EventUpdate save(Long eventId, EventUpdate update) {  // Long here
+    public EventUpdate save(Long eventId, EventUpdate update) {  
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
@@ -35,13 +35,13 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     }
 
     @Override
-    public EventUpdate getById(Long id) {  // Long here
+    public EventUpdate getById(Long id) {  
         return eventUpdateRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
     }
 
     @Override
-    public void delete(Long id) {  // Long here
+    public void delete(Long id) {  
         eventUpdateRepository.delete(getById(id));
     }
 }
