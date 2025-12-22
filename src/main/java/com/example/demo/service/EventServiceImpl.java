@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Event;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventRepository;
 
@@ -18,22 +18,22 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event save(Event event) {
-
-        // Example invalid operation check (adjust if role comes from elsewhere)
         if (event == null) {
-            throw new BadRequestException("Invalid event data");
+            throw new IllegalArgumentException("Invalid event data");
         }
-
         return eventRepository.save(event);
     }
 
     @Override
-    public Event getById(Long id) {
+    public Optional<Event> getById(Long id) {
 
-        return eventRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event not found")
-                );
+        Optional<Event> event = eventRepository.findById(id);
+
+        if (event.isEmpty()) {
+            throw new ResourceNotFoundException("Event not found");
+        }
+
+        return event;
     }
 
     @Override
