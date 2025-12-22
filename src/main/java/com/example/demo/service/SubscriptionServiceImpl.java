@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Event;
 import com.example.demo.entity.Subscription;
 import com.example.demo.entity.User;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.SubscriptionRepository;
 import com.example.demo.repository.UserRepository;
@@ -29,18 +31,27 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public Subscription subscribe(Long userId, Long eventId) {
 
+        
         if (subscriptionRepository.existsByUser_IdAndEvent_Id(userId, eventId)) {
-            throw new IllegalArgumentException("Already subscribed");
+            throw new BadRequestException(
+                    "Already subscribed to this event"
+            );
         }
 
+        
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found")
+                );
 
+        
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Event not found")
+                );
 
-        Subscription sub = new Subscription(user, event);
-        return subscriptionRepository.save(sub);
+        Subscription subscription = new Subscription(user, event);
+        return subscriptionRepository.save(subscription);
     }
 
     @Override
