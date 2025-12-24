@@ -24,7 +24,7 @@ public class Event {
     private String category;
 
     // ✅ Publisher is required (RESTRICT)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
 
@@ -38,10 +38,10 @@ public class Event {
     private LocalDateTime lastUpdatedAt;
 
     // Relationships
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.RESTRICT, orphanRemoval = false)
     private List<EventUpdate> updates;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.RESTRICT, orphanRemoval = false)
     private List<Subscription> subscriptions;
 
     // ✅ Auto-set timestamps

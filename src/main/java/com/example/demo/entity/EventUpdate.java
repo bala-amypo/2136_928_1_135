@@ -12,8 +12,8 @@ public class EventUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ Event reference is required (RESTRICT)
-    @ManyToOne(optional = false)
+    // ✅ Event reference is required, restrict deletion if updates exist
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
@@ -29,8 +29,8 @@ public class EventUpdate {
     @Column(nullable = false, updatable = false)
     private LocalDateTime postedAt;
 
-    // One-to-many relationship with BroadcastLog
-    @OneToMany(mappedBy = "eventUpdate")
+    // One-to-many relationship with BroadcastLog, deletion restricted
+    @OneToMany(mappedBy = "eventUpdate", cascade = CascadeType.RESTRICT, orphanRemoval = false)
     private List<BroadcastLog> broadcastLogs;
 
     // ✅ Automatically set timestamp

@@ -16,13 +16,13 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ User reference is required
-    @ManyToOne(optional = false)
+    // ✅ User reference is required with referential integrity
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // ✅ Event reference is required
-    @ManyToOne(optional = false)
+    // ✅ Event reference is required with referential integrity
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 

@@ -12,12 +12,12 @@ public class BroadcastLog {
     private Long id;
 
     // ✅ EventUpdate reference is required (RESTRICT)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_update_id", nullable = false)
     private EventUpdate eventUpdate;
 
     // ✅ Subscriber reference is required (RESTRICT)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "subscriber_id", nullable = false)
     private User subscriber;
 
@@ -40,12 +40,8 @@ public class BroadcastLog {
     // Automatically set sentAt on persist
     @PrePersist
     protected void onCreate() {
-        if (this.sentAt == null) {
-            this.sentAt = LocalDateTime.now();
-        }
-        if (this.deliveryStatus == null) {
-            this.deliveryStatus = "SENT";
-        }
+        if (this.sentAt == null) this.sentAt = LocalDateTime.now();
+        if (this.deliveryStatus == null) this.deliveryStatus = "SENT";
     }
 
     // Getters & Setters
