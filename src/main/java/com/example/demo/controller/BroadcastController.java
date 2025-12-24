@@ -1,34 +1,46 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.BroadcastLog;
 import com.example.demo.service.BroadcastService;
 
 @RestController
-@RequestMapping("/broadcasts")
+@RequestMapping("/api/broadcasts")
 public class BroadcastController {
 
-    @Autowired
-    private BroadcastService service;
+    private final BroadcastService service;
 
-    @PostMapping("/send")
-    public BroadcastLog send(@RequestBody BroadcastLog log) {
-        return service.save(log);
+    public BroadcastController(BroadcastService service) {
+        this.service = service;
     }
 
-    @GetMapping("/all")
-    public List<BroadcastLog> getAll() {
-        return service.getAll();
+    // -------------------- TRIGGER BROADCAST FOR AN EVENT UPDATE --------------------
+    @PostMapping("/trigger/{updateId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> triggerBroadcast(@PathVariable Long updateId) {
+        service.broadcastUpdate(updateId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    
-    @GetMapping("/{id}")
-    public BroadcastLog getById(@PathVariable Long id) {
-        return service.getAll().stream()
-                .filter(log -> log.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("BroadcastLog not found"));
+    // -------------------- GET BROADCAST LOGS FOR SPECIFIC EVENT UPDATE --------------------
+    @GetMapping("/logs/{updateId}")
+    @PreAuthorize("hasRole('PUBLISHER') or hasRole('ADMIN') or hasRole('SUBSCRIBER')")
+    public ResponseEntity<List<BroadcastLog>> getLogsForUpdate(@PathVariable Long updateId) {
+        List<BroadcastLog> logs = service.getLogsForUpdate(updateId);
+        return new ResponseEntity<>(logs, HttpStatus.OK);
+    }
+
+    // -------------------- GET ALL BROADCAST LOGS --------------------
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<BroadcastLog>> getAllLogs() {
+        List<BroadcastLog> logs = service.getAllLogs();
+        return new ResponseEntity<>(logs, HttpStatus.OK);
     }
 }
