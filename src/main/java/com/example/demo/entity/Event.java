@@ -23,7 +23,7 @@ public class Event {
 
     private String category;
 
-    // ✅ Publisher is required (RESTRICT)
+    // Publisher is required
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
@@ -37,14 +37,14 @@ public class Event {
     @Column(nullable = false)
     private LocalDateTime lastUpdatedAt;
 
-    // Relationships
-    @OneToMany(mappedBy = "event", cascade = CascadeType.RESTRICT, orphanRemoval = false)
+    // Relationships (removed invalid cascade)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private List<EventUpdate> updates;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.RESTRICT, orphanRemoval = false)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
 
-    // ✅ Auto-set timestamps
+    // Auto-set timestamps
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -69,67 +69,20 @@ public class Event {
     }
 
     // Getters & Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public User getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(User publisher) {
-        this.publisher = publisher;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public User getPublisher() { return publisher; }
+    public void setPublisher(User publisher) { this.publisher = publisher; }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getLastUpdatedAt() { return lastUpdatedAt; }
 }
