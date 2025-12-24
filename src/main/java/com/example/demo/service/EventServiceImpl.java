@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,19 +20,15 @@ public class EventServiceImpl implements EventService {
         if (event == null) {
             throw new IllegalArgumentException("Invalid event data");
         }
+
+        // If updating an existing event, lastUpdatedAt will be handled by @PreUpdate in entity
         return eventRepository.save(event);
     }
 
     @Override
-    public Optional<Event> getById(Long id) {
-
-        Optional<Event> event = eventRepository.findById(id);
-
-        if (event.isEmpty()) {
-            throw new ResourceNotFoundException("Event not found");
-        }
-
-        return event;
+    public Event getById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
     }
 
     @Override
@@ -43,11 +38,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void delete(Long id) {
-
         Event event = eventRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event not found")
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        // Referential integrity check (RESTRICT)
+        if ((event.getSubscriptions() != null && !event.getSubscriptions().isEmpty()) ||
+            (event.getUpdates() != null && !event.getUpdates().isEmpty())) {
+            throw new IllegalStateException(
+                "Cannot delete Event with existing subscriptions or updates"
+            );
+        }
 
         eventRepository.delete(event);
     }

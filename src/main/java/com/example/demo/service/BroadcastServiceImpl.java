@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.BroadcastLog;
+import com.example.demo.entity.EventUpdate;
+import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.BroadcastLogRepository;
 
@@ -22,6 +24,17 @@ public class BroadcastServiceImpl implements BroadcastService {
 
         if (log == null) {
             throw new IllegalArgumentException("Invalid broadcast log data");
+        }
+
+        // Referential integrity checks (RESTRICT)
+        EventUpdate eventUpdate = log.getEventUpdate();
+        if (eventUpdate == null) {
+            throw new ResourceNotFoundException("EventUpdate must exist for broadcast");
+        }
+
+        User subscriber = log.getSubscriber();
+        if (subscriber == null) {
+            throw new ResourceNotFoundException("Subscriber must exist for broadcast");
         }
 
         return broadcastLogRepository.save(log);
