@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,30 +12,34 @@ public class EventUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
-    @ManyToOne
+    // ✅ Event reference is required (RESTRICT)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private String updateContent;
 
-    
-    private String updateType;
+    @Column(nullable = false)
+    private String updateType; // INFO / WARNING / CRITICAL
 
-    private Timestamp postedAt;
+    @Column(nullable = false)
+    private String severityLevel = "LOW"; // default
 
-    
-    @PrePersist
-    protected void onCreate() {
-        this.postedAt = new Timestamp(System.currentTimeMillis());
-    }
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime postedAt;
 
-    
+    // One-to-many relationship with BroadcastLog
     @OneToMany(mappedBy = "eventUpdate")
     private List<BroadcastLog> broadcastLogs;
 
-    
+    // ✅ Automatically set timestamp
+    @PrePersist
+    protected void onCreate() {
+        this.postedAt = LocalDateTime.now();
+    }
+
+    // Constructors
     public EventUpdate() {}
 
     public EventUpdate(Event event, String updateContent, String updateType) {
@@ -44,7 +48,7 @@ public class EventUpdate {
         this.updateType = updateType;
     }
 
-    
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -77,7 +81,15 @@ public class EventUpdate {
         this.updateType = updateType;
     }
 
-    public Timestamp getPostedAt() {
+    public String getSeverityLevel() {
+        return severityLevel;
+    }
+
+    public void setSeverityLevel(String severityLevel) {
+        this.severityLevel = severityLevel;
+    }
+
+    public LocalDateTime getPostedAt() {
         return postedAt;
     }
 }

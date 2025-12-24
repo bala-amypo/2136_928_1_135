@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,41 +15,40 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;   
+    private Long id;
 
+    @Column(nullable = false)
     private String fullName;
 
-    @Column(nullable = false`, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    
-    private String role;
+    @Column(nullable = false)
+    private String role = "SUBSCRIBER"; // default role
 
-    private Timestamp createdAt;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Timestamp(System.currentTimeMillis());
-    }
+    // Relationships
 
-    
-
-    
     @OneToMany(mappedBy = "publisher")
-    private List<Event> events;
+    private List<Event> publishedEvents;
 
-    
     @OneToMany(mappedBy = "user")
     private List<Subscription> subscriptions;
 
-    
     @OneToMany(mappedBy = "subscriber")
     private List<BroadcastLog> broadcastLogs;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
+    // Constructors
     public User() {}
 
     public User(String fullName, String email, String password, String role) {
@@ -59,7 +58,7 @@ public class User {
         this.role = role;
     }
 
-
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -87,20 +86,20 @@ public class User {
     public String getPassword() {
         return password;
     }
- 
+
     public void setPassword(String password) {
         this.password = password;
     }
- 
+
     public String getRole() {
         return role;
     }
- 
+
     public void setRole(String role) {
         this.role = role;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 }

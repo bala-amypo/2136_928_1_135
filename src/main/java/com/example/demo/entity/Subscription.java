@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -16,25 +16,26 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
-    @ManyToOne
+    // ✅ User reference is required
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    
-    @ManyToOne
+    // ✅ Event reference is required
+    @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    private Timestamp subscribedAt;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime subscribedAt;
 
-    
+    // ✅ Automatically set timestamp
     @PrePersist
     protected void onCreate() {
-        this.subscribedAt = new Timestamp(System.currentTimeMillis());
+        this.subscribedAt = LocalDateTime.now();
     }
 
-    
+    // Constructors
     public Subscription() {}
 
     public Subscription(User user, Event event) {
@@ -42,7 +43,7 @@ public class Subscription {
         this.event = event;
     }
 
-    
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -54,20 +55,20 @@ public class Subscription {
     public User getUser() {
         return user;
     }
- 
+
     public void setUser(User user) {
         this.user = user;
     }
- 
+
     public Event getEvent() {
         return event;
     }
- 
+
     public void setEvent(Event event) {
         this.event = event;
     }
 
-    public Timestamp getSubscribedAt() {
+    public LocalDateTime getSubscribedAt() {
         return subscribedAt;
     }
 }
