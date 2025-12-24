@@ -1,39 +1,51 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "broadcasts")
+@Table(name = "broadcast_logs")
 public class BroadcastLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
-    @ManyToOne
+    // ✅ EventUpdate reference is required (RESTRICT)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "event_update_id", nullable = false)
     private EventUpdate eventUpdate;
 
-    
-    @ManyToOne
+    // ✅ Subscriber reference is required (RESTRICT)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "subscriber_id", nullable = false)
     private User subscriber;
 
-    
-    private String deliveryStatus;
+    @Column(nullable = false)
+    private String deliveryStatus = "SENT"; // default
 
-    private Timestamp sentAt;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime sentAt;
 
-    
+    // Constructors
     public BroadcastLog() {}
 
     public BroadcastLog(EventUpdate eventUpdate, User subscriber, String deliveryStatus) {
         this.eventUpdate = eventUpdate;
         this.subscriber = subscriber;
         this.deliveryStatus = deliveryStatus;
-        this.sentAt = new Timestamp(System.currentTimeMillis());
+        this.sentAt = LocalDateTime.now();
+    }
+
+    // Automatically set sentAt on persist
+    @PrePersist
+    protected void onCreate() {
+        if (this.sentAt == null) {
+            this.sentAt = LocalDateTime.now();
+        }
+        if (this.deliveryStatus == null) {
+            this.deliveryStatus = "SENT";
+        }
     }
 
     // Getters & Setters
@@ -69,11 +81,11 @@ public class BroadcastLog {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public Timestamp getSentAt() {
+    public LocalDateTime getSentAt() {
         return sentAt;
     }
 
-    public void setSentAt(Timestamp sentAt) {
+    public void setSentAt(LocalDateTime sentAt) {
         this.sentAt = sentAt;
     }
 }
