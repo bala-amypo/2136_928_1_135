@@ -32,14 +32,14 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // Relationships with referential integrity
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.RESTRICT, fetch = FetchType.LAZY)
+    // Relationships with referential integrity (no invalid cascade)
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private List<Event> publishedEvents;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.RESTRICT, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
 
-    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.RESTRICT, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscriber", fetch = FetchType.LAZY)
     private List<BroadcastLog> broadcastLogs;
 
     @PrePersist
