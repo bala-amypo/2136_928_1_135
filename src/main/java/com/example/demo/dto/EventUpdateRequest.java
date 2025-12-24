@@ -1,37 +1,19 @@
 package com.example.demo.dto;
 
-import java.time.LocalDateTime;
-
 public class EventUpdateRequest {
-
-    private String title;
-    private String description;
-    private LocalDateTime updateTime;
+    private Long eventId;
+    private String updateContent;
+    private String updateType;
 
     public EventUpdateRequest() {}
 
     // Getters & Setters
-    public String getTitle() {
-        return title;
-    }
+    public Long getEventId() { return eventId; }
+    public void setEventId(Long eventId) { this.eventId = eventId; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getUpdateContent() { return updateContent; }
+    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
+    public String getUpdateType() { return updateType; }
+    public void setUpdateType(String updateType) { this.updateType = updateType; }
 }
