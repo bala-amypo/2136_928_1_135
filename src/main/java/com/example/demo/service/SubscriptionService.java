@@ -13,4 +13,9 @@ public interface SubscriptionService {
     List<Subscription> getSubscriptionsForUser(Long userId);
 
     boolean checkSubscription(Long userId, Long eventId);
+
+    // Methods expected by tests
+    boolean isSubscribed(long userId, long eventId);
+
+    List<Subscription> getUserSubscriptions(long userId);
 }

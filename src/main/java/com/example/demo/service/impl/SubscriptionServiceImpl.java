@@ -20,7 +20,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
-    // Constructor injection of repositories
     public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository,
                                    UserRepository userRepository,
                                    EventRepository eventRepository) {
@@ -72,5 +71,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public boolean checkSubscription(Long userId, Long eventId) {
         return subscriptionRepository.existsByUserIdAndEventId(userId, eventId);
+    }
+
+    // ===== Methods expected by tests =====
+
+    @Override
+    public boolean isSubscribed(long userId, long eventId) {
+        return checkSubscription(userId, eventId);
+    }
+
+    @Override
+    public List<Subscription> getUserSubscriptions(long userId) {
+        return getSubscriptionsForUser(userId);
     }
 }
