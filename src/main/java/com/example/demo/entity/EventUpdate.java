@@ -48,8 +48,7 @@ public class EventUpdate {
         return message;
     }
 
-    // Rename setter to match the old "setUpdateContent" usage
-    public void setUpdateContent(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -57,12 +56,20 @@ public class EventUpdate {
         return severityLevel;
     }
 
-    // Rename setter to match the old "setUpdateType" usage
-    public void setUpdateType(SeverityLevel severityLevel) {
+    public void setSeverityLevel(SeverityLevel severityLevel) {
         this.severityLevel = severityLevel;
     }
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    // Optional: keep old methods for backward compatibility
+    public void setUpdateContent(String message) {
+        this.message = message;
+    }
+
+    public void setUpdateType(SeverityLevel severityLevel) {
+        this.severityLevel = severityLevel;
     }
 }
