@@ -28,12 +28,11 @@ public class User {
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
     // ===== RELATIONSHIPS =====
-
     @OneToMany(mappedBy = "publisher")
     private List<Event> events;
 
@@ -44,57 +43,24 @@ public class User {
     private List<BroadcastLog> broadcastLogs;
 
     // ===== CONSTRUCTORS =====
-
     public User() {}
 
     // ===== GETTERS & SETTERS =====
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getFullName() {
-        return fullName;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+    public void setRole(String roleStr) { this.role = Role.valueOf(roleStr); }
 
-    public String getEmail() {
-        return email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-    
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    // Optional setter for test compatibility
-    public void setRole(String roleStr) {
-        this.role = Role.valueOf(roleStr);
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
