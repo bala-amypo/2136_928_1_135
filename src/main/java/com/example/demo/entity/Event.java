@@ -15,7 +15,7 @@ public class Event {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 1000, nullable = false)
+    @Column(nullable = false, length = 1000)
     private String description;
 
     @Column(nullable = false)
@@ -23,77 +23,94 @@ public class Event {
 
     private String category;
 
-    // Publisher is required
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
 
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime lastUpdatedAt;
-
-    // Relationships
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<EventUpdate> updates;
-
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<Subscription> subscriptions;
-
-    // Auto-set timestamps
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.lastUpdatedAt = LocalDateTime.now();
-        if (isActive == null) isActive = true;
+        createdAt = LocalDateTime.now();
+        if (isActive == null) {
+            isActive = true;
+        }
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.lastUpdatedAt = LocalDateTime.now();
-    }
+    // ===== RELATIONSHIPS =====
 
-    // Constructors
+    @OneToMany(mappedBy = "event")
+    private List<EventUpdate> updates;
+
+    @OneToMany(mappedBy = "event")
+    private List<Subscription> subscriptions;
+
+    // ===== CONSTRUCTORS =====
+
     public Event() {}
 
-    public Event(String title, String description, String location, String category, User publisher) {
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+    
+    public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+    
+    public void setCategory(String category) {
         this.category = category;
+    }
+
+    public User getPublisher() {
+        return publisher;
+    }
+    
+    public void setPublisher(User publisher) {
         this.publisher = publisher;
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Boolean getIsActive() {
+        return isActive;
+    }
+    
+    public void setIsActive(Boolean active) {
+        isActive = active;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
-    public User getPublisher() { return publisher; }
-    public void setPublisher(User publisher) { this.publisher = publisher; }
-
-    public Boolean getIsActive() { return isActive; }
-    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getLastUpdatedAt() { return lastUpdatedAt; }
-
-    // Relationship getters
-    public List<EventUpdate> getUpdates() { return updates; }
-    public List<Subscription> getSubscriptions() { return subscriptions; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "event_updates")
@@ -11,35 +12,67 @@ public class EventUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(nullable = false)
-    private String message;
+    @Column(nullable = false, length = 1000)
+    private String updateContent;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String updateType; // INFO / WARNING / CRITICAL
+
+    private LocalDateTime postedAt;
 
     @PrePersist
-    protected void onCreate() { this.createdAt = LocalDateTime.now(); }
-
-    // Constructors
-    public EventUpdate() {}
-    public EventUpdate(Event event, String message) {
-        this.event = event;
-        this.message = message;
+    protected void onCreate() {
+        postedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== RELATIONSHIPS =====
 
-    public Event getEvent() { return event; }
-    public void setEvent(Event event) { this.event = event; }
+    @OneToMany(mappedBy = "eventUpdate")
+    private List<BroadcastLog> broadcastLogs;
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    // ===== CONSTRUCTORS =====
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public EventUpdate() {}
+
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public String getUpdateContent() {
+        return updateContent;
+    }
+    
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    public String getUpdateType() {
+        return updateType;
+    }
+    
+    public void setUpdateType(String updateType) {
+        this.updateType = updateType;
+    }
+
+    public LocalDateTime getPostedAt() {
+        return postedAt;
+    }
 }

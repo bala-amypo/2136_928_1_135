@@ -1,37 +1,65 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(
+    name = "subscriptions",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "event_id"})
+)
 public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    // Constructors
+    private LocalDateTime subscribedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        subscribedAt = LocalDateTime.now();
+    }
+
+    // ===== CONSTRUCTORS =====
+
     public Subscription() {}
-    public Subscription(User user, Event event) {
+
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setUser(User user) {
         this.user = user;
+    }
+    
+    public void setEvent(Event event) {
         this.event = event;
     }
 
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-
-    public Event getEvent() { return event; }
-    public void setEvent(Event event) { this.event = event; }
+    public LocalDateTime getSubscribedAt() {
+        return subscribedAt;
+    }
 }
