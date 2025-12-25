@@ -21,33 +21,39 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     private EventRepository eventRepository;
 
     @Override
-    public EventUpdate save(Long eventId, EventUpdate update) {
+    public EventUpdate getEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"))
+                .getUpdates()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("No updates found for event"));
+    }
 
+    @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        Long eventId = update.getEvent().getId();
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event not found")
-                );
-
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
         update.setEvent(event);
         return eventUpdateRepository.save(update);
     }
 
     @Override
-    public List<EventUpdate> getAll() {
-        return eventUpdateRepository.findAll();
+    public List<EventUpdate> getUpdatesForEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+        return event.getUpdates();
     }
 
     @Override
-    public EventUpdate getById(Long id) {
-
+    public EventUpdate getUpdateById(Long id) {
         return eventUpdateRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event update not found")
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Event update not found"));
     }
 
     @Override
-    public void delete(Long id) {
-        eventUpdateRepository.delete(getById(id));
+    public List<EventUpdate> getAllUpdates() {
+        return eventUpdateRepository.findAll();
     }
 }
