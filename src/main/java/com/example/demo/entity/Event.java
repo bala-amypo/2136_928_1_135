@@ -31,17 +31,23 @@ public class Event {
     private Boolean isActive = true;
 
     private LocalDateTime createdAt;
+    private LocalDateTime lastUpdatedAt;
 
     @PrePersist
-    protected void onCreate() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
+        lastUpdatedAt = createdAt;
         if (isActive == null) {
             isActive = true;
         }
     }
 
-    // ===== RELATIONSHIPS =====
+    @PreUpdate
+    public void onUpdate() {
+        lastUpdatedAt = LocalDateTime.now();
+    }
 
+    // ===== RELATIONSHIPS =====
     @OneToMany(mappedBy = "event")
     private List<EventUpdate> updates;
 
@@ -49,23 +55,21 @@ public class Event {
     private List<Subscription> subscriptions;
 
     // ===== CONSTRUCTORS =====
-
     public Event() {}
 
     // ===== GETTERS & SETTERS =====
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     public void setTitle(String title) {
         this.title = title;
     }
@@ -73,7 +77,7 @@ public class Event {
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -81,7 +85,7 @@ public class Event {
     public String getLocation() {
         return location;
     }
-    
+
     public void setLocation(String location) {
         this.location = location;
     }
@@ -89,7 +93,7 @@ public class Event {
     public String getCategory() {
         return category;
     }
-    
+
     public void setCategory(String category) {
         this.category = category;
     }
@@ -97,7 +101,7 @@ public class Event {
     public User getPublisher() {
         return publisher;
     }
-    
+
     public void setPublisher(User publisher) {
         this.publisher = publisher;
     }
@@ -105,12 +109,20 @@ public class Event {
     public Boolean getIsActive() {
         return isActive;
     }
-    
+
     public void setIsActive(Boolean active) {
         isActive = active;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 }
