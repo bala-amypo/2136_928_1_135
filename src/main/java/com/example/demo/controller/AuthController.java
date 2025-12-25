@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
@@ -27,7 +28,12 @@ public class AuthController {
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
+
+        // Convert role string from request to Role enum
+        if (request.getRole() != null) {
+            Role role = Role.valueOf(request.getRole().toUpperCase());
+            user.setRole(role);
+        }
 
         User saved = userService.registerUser(user);
         String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), saved.getRole());
