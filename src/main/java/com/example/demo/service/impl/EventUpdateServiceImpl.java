@@ -26,10 +26,9 @@ public class EventUpdateServiceImpl implements EventUpdateService {
 
     @Override
     public EventUpdate createEventUpdate(EventUpdate eventUpdate) {
-        // Save the update
         EventUpdate savedUpdate = eventUpdateRepository.save(eventUpdate);
 
-        // Broadcast the update to all subscribers of the event
+        // Use triggerBroadcast() from BroadcastService
         broadcastService.triggerBroadcast(savedUpdate.getId());
 
         return savedUpdate;
@@ -47,9 +46,7 @@ public class EventUpdateServiceImpl implements EventUpdateService {
 
     @Override
     public EventUpdate updateEventUpdate(EventUpdate eventUpdate) {
-        if (eventUpdate.getId() == null) {
-            return null;
-        }
+        if (eventUpdate.getId() == null) return null;
         return eventUpdateRepository.save(eventUpdate);
     }
 
@@ -58,10 +55,9 @@ public class EventUpdateServiceImpl implements EventUpdateService {
         eventUpdateRepository.deleteById(id);
     }
 
-    // Remove recordDelivery() because BroadcastService doesn't have it
+    // Remove recordDelivery() as BroadcastService does not provide it
     @Override
     public void recordDelivery(long userId, long eventUpdateId, boolean success) {
-        // Optional: remove or log warning
-        throw new UnsupportedOperationException("recordDelivery not supported");
+        throw new UnsupportedOperationException("recordDelivery not supported in current BroadcastService");
     }
 }
