@@ -22,7 +22,8 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role; // ADMIN / PUBLISHER / SUBSCRIBER
+    @Enumerated(EnumType.STRING)
+    private Role role; // ADMIN / PUBLISHER / SUBSCRIBER
 
     private LocalDateTime createdAt;
 
@@ -52,16 +53,16 @@ public class User {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFullName() {
         return fullName;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -80,12 +81,17 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
     
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    // Optional setter for test compatibility
+    public void setRole(String roleStr) {
+        this.role = Role.valueOf(roleStr);
     }
 
     public LocalDateTime getCreatedAt() {
