@@ -7,13 +7,11 @@ import java.util.Optional;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
-    // Already suggested before
     List<Subscription> findByEventId(Long eventId);
 
     List<Subscription> findByUserId(Long userId);
 
     boolean existsByUserIdAndEventId(Long userId, Long eventId);
 
-    // THIS IS MISSING
     Optional<Subscription> findByUserIdAndEventId(Long userId, Long eventId);
 }
