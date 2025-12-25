@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtUtil {
@@ -16,25 +14,25 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 1 day
 
-    // ✅ REQUIRED by AuthController
+    // =======================
+    // 1️⃣ Generate Token
+    // =======================
     public String generateToken(Long userId, String email, String role) {
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", userId);
-        claims.put("role", role);
-
         return Jwts.builder()
-                .setClaims(claims)
                 .setSubject(email)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .claim("userId", userId)
+                .claim("role", role)
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    // ✅ REQUIRED by JwtAuthenticationFilter
+    // =======================
+    // 2️⃣ Validate Token
+    // =======================
     public boolean validateToken(String token) {
         try {
             extractAllClaims(token);
@@ -44,10 +42,16 @@ public class JwtUtil {
         }
     }
 
+    // =======================
+    // 3️⃣ Get Email from Token
+    // =======================
     public String getEmailFromToken(String token) {
         return extractAllClaims(token).getSubject();
     }
 
+    // =======================
+    // Helper
+    // =======================
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
