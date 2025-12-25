@@ -7,5 +7,11 @@ public interface SubscriptionService {
 
     Subscription subscribe(Long userId, Long eventId);
 
-    List<Subscription> getAll();
+    void unsubscribe(Long userId, Long eventId);
+
+    List<Subscription> getUserSubscriptions(Long userId);
+
+    boolean isSubscribed(Long userId, Long eventId);
+
+    List<Subscription> getAllSubscriptions();
 }
