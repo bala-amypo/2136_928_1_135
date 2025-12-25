@@ -29,7 +29,6 @@ public class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public void triggerBroadcast(Long updateId) {
-
         EventUpdate update = eventUpdateRepository.findById(updateId)
                 .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
 
@@ -47,5 +46,24 @@ public class BroadcastServiceImpl implements BroadcastService {
     @Override
     public List<BroadcastLog> getLogsForUpdate(Long updateId) {
         return broadcastLogRepository.findByEventUpdateId(updateId);
+    }
+
+    // ===== Methods expected by tests =====
+
+    @Override
+    public void broadcastUpdate(long updateId) {
+        triggerBroadcast(updateId);
+    }
+
+    @Override
+    public void recordDelivery(long updateId, long userId, boolean status) {
+        BroadcastLog log = broadcastLogRepository
+                .findByEventUpdateId(updateId).stream()
+                .filter(b -> b.getSubscriber().getId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Broadcast log not found"));
+
+        log.setDeliveryStatus(status ? "DELIVERED" : "FAILED");
+        broadcastLogRepository.save(log);
     }
 }

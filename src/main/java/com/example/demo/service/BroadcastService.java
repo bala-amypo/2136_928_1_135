@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.BroadcastLog;
+
 import java.util.List;
 
 public interface BroadcastService {
@@ -8,6 +9,10 @@ public interface BroadcastService {
     // Trigger broadcast for an EventUpdate
     void triggerBroadcast(Long updateId);
 
-    // Fetch broadcast logs for an EventUpdate
     List<BroadcastLog> getLogsForUpdate(Long updateId);
+
+    // ===== Methods expected by tests =====
+    void broadcastUpdate(long updateId);
+
+    void recordDelivery(long updateId, long userId, boolean status);
 }
