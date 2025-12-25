@@ -20,6 +20,10 @@ public interface EventUpdateService {
     // Delete an event update
     void deleteEventUpdate(long id);
 
+    // Methods for controller compatibility
+    EventUpdate publishUpdate(EventUpdate update);
+    List<EventUpdate> getUpdatesForEvent(Long eventId);
+
     // Optional: record delivery (throw UnsupportedOperationException if BroadcastService doesn't support it)
     void recordDelivery(long userId, long eventUpdateId, boolean success);
 }

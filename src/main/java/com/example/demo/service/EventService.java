@@ -9,7 +9,7 @@ public interface EventService {
 
     Event updateEvent(Long id, Event event);
 
-    Event getById(long id);  // <-- FIXED per test case
+    Event getEventById(Long id); // renamed to match controller
 
     List<Event> getActiveEvents();
 
