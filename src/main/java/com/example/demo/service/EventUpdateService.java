@@ -6,9 +6,21 @@ import java.util.List;
 
 public interface EventUpdateService {
 
-    EventUpdate publishUpdate(EventUpdate update);
+    // Create a new event update
+    EventUpdate createEventUpdate(EventUpdate eventUpdate);
 
-    List<EventUpdate> getUpdatesForEvent(Long eventId);
+    // Get update by ID
+    EventUpdate getUpdateById(long id);
 
-    EventUpdate getUpdateById(Long id);
+    // Get all updates for a specific event, ordered by timestamp
+    List<EventUpdate> getUpdatesByEventId(long eventId);
+
+    // Update an existing event update
+    EventUpdate updateEventUpdate(EventUpdate eventUpdate);
+
+    // Delete an event update
+    void deleteEventUpdate(long id);
+
+    // Record the delivery status of an update for a user
+    void recordDelivery(long userId, long eventUpdateId, boolean success);
 }
