@@ -31,9 +31,20 @@ public class EventUpdate {
     // ===== CONSTRUCTORS =====
     public EventUpdate() {}
 
+    public EventUpdate(Event event, String message, SeverityLevel severityLevel) {
+        this.event = event;
+        this.message = message;
+        this.severityLevel = severityLevel;
+        this.timestamp = LocalDateTime.now();
+    }
+
     // ===== GETTERS & SETTERS =====
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) { // added for tests
+        this.id = id;
     }
 
     public Event getEvent() {
@@ -64,7 +75,7 @@ public class EventUpdate {
         return timestamp;
     }
 
-    // Optional helper methods (for backward compatibility)
+    // Optional helper methods for backward compatibility
     public void setUpdateContent(String message) {
         this.message = message;
     }
