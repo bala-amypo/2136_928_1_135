@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "event_updates")
@@ -17,29 +16,22 @@ public class EventUpdate {
     private Event event;
 
     @Column(nullable = false, length = 1000)
-    private String updateContent;
+    private String message;
 
-    @Column(nullable = false)
-    private String updateType; // INFO / WARNING / CRITICAL
+    @Enumerated(EnumType.STRING)
+    private SeverityLevel severityLevel;
 
-    private LocalDateTime postedAt;
+    private LocalDateTime timestamp;
 
     @PrePersist
-    protected void onCreate() {
-        postedAt = LocalDateTime.now();
+    public void onCreate() {  // ✅ should be public
+        this.timestamp = LocalDateTime.now();
     }
 
-    // ===== RELATIONSHIPS =====
-
-    @OneToMany(mappedBy = "eventUpdate")
-    private List<BroadcastLog> broadcastLogs;
-
     // ===== CONSTRUCTORS =====
-
     public EventUpdate() {}
 
     // ===== GETTERS & SETTERS =====
-
     public Long getId() {
         return id;
     }
@@ -48,31 +40,27 @@ public class EventUpdate {
         return event;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     public void setEvent(Event event) {
         this.event = event;
     }
 
-    public String getUpdateContent() {
-        return updateContent;
-    }
-    
-    public void setUpdateContent(String updateContent) {
-        this.updateContent = updateContent;
+    public String getMessage() {
+        return message;
     }
 
-    public String getUpdateType() {
-        return updateType;
-    }
-    
-    public void setUpdateType(String updateType) {
-        this.updateType = updateType;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public LocalDateTime getPostedAt() {
-        return postedAt;
+    public SeverityLevel getSeverityLevel() {
+        return severityLevel;
+    }
+
+    public void setSeverityLevel(SeverityLevel severityLevel) {
+        this.severityLevel = severityLevel;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }
