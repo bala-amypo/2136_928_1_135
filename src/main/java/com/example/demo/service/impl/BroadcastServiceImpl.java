@@ -31,18 +31,15 @@ public class BroadcastServiceImpl implements BroadcastService {
     public void triggerBroadcast(Long updateId) {
 
         EventUpdate update = eventUpdateRepository.findById(updateId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Update not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
 
-        List<Subscription> subscriptions =
-                subscriptionRepository.findByEventId(update.getEvent().getId());
+        List<Subscription> subscriptions = subscriptionRepository.findByEventId(update.getEvent().getId());
 
         for (Subscription sub : subscriptions) {
             BroadcastLog log = new BroadcastLog();
             log.setEventUpdate(update);
             log.setSubscriber(sub.getUser());
             log.setDeliveryStatus("SENT");
-
             broadcastLogRepository.save(log);
         }
     }

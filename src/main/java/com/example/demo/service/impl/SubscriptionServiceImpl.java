@@ -20,7 +20,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
-    // 🚨 REQUIRED constructor order
+    // Constructor injection of repositories
     public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository,
                                    UserRepository userRepository,
                                    EventRepository eventRepository) {
@@ -33,17 +33,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Subscription subscribe(Long userId, Long eventId) {
 
         if (subscriptionRepository.existsByUserIdAndEventId(userId, eventId)) {
-            // 🚨 message must contain this keyword
             throw new BadRequestException("Already subscribed");
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
         Subscription subscription = new Subscription();
         subscription.setUser(user);
@@ -57,8 +54,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         Subscription subscription = subscriptionRepository
                 .findByUserIdAndEventId(userId, eventId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription not found"));
 
         subscriptionRepository.delete(subscription);
     }
