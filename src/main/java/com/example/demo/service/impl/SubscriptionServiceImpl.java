@@ -30,7 +30,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public Subscription subscribe(Long userId, Long eventId) {
-
         if (subscriptionRepository.existsByUserIdAndEventId(userId, eventId)) {
             throw new BadRequestException("Already subscribed");
         }
@@ -41,30 +40,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        Subscription subscription = new Subscription();
-        subscription.setUser(user);
-        subscription.setEvent(event);
+        // Use convenience constructor
+        Subscription subscription = new Subscription(user, event);
 
         return subscriptionRepository.save(subscription);
     }
 
     @Override
     public void unsubscribe(Long userId, Long eventId) {
-
         Subscription subscription = subscriptionRepository
                 .findByUserIdAndEventId(userId, eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription not found"));
-
         subscriptionRepository.delete(subscription);
     }
 
     @Override
     public List<Subscription> getSubscriptionsForUser(Long userId) {
-
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found");
         }
-
         return subscriptionRepository.findByUserId(userId);
     }
 
@@ -74,7 +68,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     // ===== Methods expected by tests =====
-
     @Override
     public boolean isSubscribed(long userId, long eventId) {
         return checkSubscription(userId, eventId);

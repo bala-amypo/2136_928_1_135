@@ -24,16 +24,15 @@ public class Subscription {
 
     private LocalDateTime subscribedAt;
 
-    // ===== ON CREATE =====
     @PrePersist
-    public void onCreate() { // changed to public
+    public void onCreate() { // made public for tests
         subscribedAt = LocalDateTime.now();
     }
 
     // ===== CONSTRUCTORS =====
     public Subscription() {}
 
-    // Optional constructor for tests or quick creation
+    // Convenience constructor for tests
     public Subscription(User user, Event event) {
         this.user = user;
         this.event = event;
@@ -41,35 +40,13 @@ public class Subscription {
     }
 
     // ===== GETTERS & SETTERS =====
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public User getUser() { return user; }
+    public Event getEvent() { return event; }
+    public LocalDateTime getSubscribedAt() { return subscribedAt; }
 
-    public User getUser() {
-        return user;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public LocalDateTime getSubscribedAt() {
-        return subscribedAt;
-    }
-
-    public void setSubscribedAt(LocalDateTime subscribedAt) {
-        this.subscribedAt = subscribedAt;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setUser(User user) { this.user = user; }
+    public void setEvent(Event event) { this.event = event; }
+    public void setSubscribedAt(LocalDateTime subscribedAt) { this.subscribedAt = subscribedAt; }
 }
