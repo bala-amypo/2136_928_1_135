@@ -66,6 +66,10 @@ public class Event {
         this.id = id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -106,12 +110,22 @@ public class Event {
         this.publisher = publisher;
     }
 
+    // Primitive getter/setter for tests
+    public boolean isActive() {
+        return isActive != null && isActive;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
+    // Boxed getter/setter for JPA
     public Boolean getIsActive() {
         return isActive;
     }
 
     public void setIsActive(Boolean active) {
-        isActive = active;
+        this.isActive = active;
     }
 
     public LocalDateTime getCreatedAt() {
