@@ -16,6 +16,7 @@ public class JwtUtil {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
+    // Generate token
     public String generateToken(Long id, String email, String role) {
         return Jwts.builder()
                 .claim("id", id)
@@ -27,6 +28,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // Validate token
     public boolean validateToken(String token) {
         try {
             extractAllClaims(token);
@@ -36,6 +38,7 @@ public class JwtUtil {
         }
     }
 
+    // Get email (username) from token
     public String getUsernameFromToken(String token) {
         return extractAllClaims(token).getSubject();
     }
@@ -44,6 +47,19 @@ public class JwtUtil {
         return getUsernameFromToken(token);
     }
 
+    // ===== Methods required by test =====
+
+    // Extract user ID from token
+    public Long getUserIdFromToken(String token) {
+        return extractAllClaims(token).get("id", Long.class);
+    }
+
+    // Extract role from token
+    public String getRoleFromToken(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    // ===== Helper =====
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
