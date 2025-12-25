@@ -14,15 +14,14 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 1 day
+    // Token validity 10 hours
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
-    // =======================
-    // 1️⃣ Generate Token
-    // =======================
-    public String generateToken(Long userId, String email, String role) {
+    // Generate JWT token
+    public String generateToken(Long id, String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("userId", userId)
+                .claim("id", id)
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -30,9 +29,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // =======================
-    // 2️⃣ Validate Token
-    // =======================
+    // Validate token
     public boolean validateToken(String token) {
         try {
             extractAllClaims(token);
@@ -42,16 +39,11 @@ public class JwtUtil {
         }
     }
 
-    // =======================
-    // 3️⃣ Get Email from Token
-    // =======================
+    // Get email (username) from token
     public String getEmailFromToken(String token) {
         return extractAllClaims(token).getSubject();
     }
 
-    // =======================
-    // Helper
-    // =======================
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
