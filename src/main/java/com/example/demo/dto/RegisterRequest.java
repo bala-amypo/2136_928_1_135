@@ -1,13 +1,15 @@
 package com.example.demo.dto;
 
 public class RegisterRequest {
+
     private String fullName;
     private String email;
     private String password;
-    private String role;
+    private String role; // String, will be converted to Role enum in controller
 
     public RegisterRequest() {}
 
+    // ===== GETTERS & SETTERS =====
     public String getFullName() {
         return fullName;
     }
@@ -19,7 +21,7 @@ public class RegisterRequest {
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -27,7 +29,7 @@ public class RegisterRequest {
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -35,7 +37,7 @@ public class RegisterRequest {
     public String getRole() {
         return role;
     }
-    
+
     public void setRole(String role) {
         this.role = role;
     }

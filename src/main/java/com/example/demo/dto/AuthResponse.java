@@ -1,24 +1,28 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Role;
+
 public class AuthResponse {
+
     private String token;
     private Long userId;
     private String email;
-    private String role;
+    private Role role;
 
     public AuthResponse() {}
 
-    public AuthResponse(String token, Long userId, String email, String role) {
+    public AuthResponse(String token, Long userId, String email, Role role) {
         this.token = token;
         this.userId = userId;
         this.email = email;
         this.role = role;
     }
 
+    // ===== GETTERS & SETTERS =====
     public String getToken() {
         return token;
     }
-    
+
     public void setToken(String token) {
         this.token = token;
     }
@@ -26,7 +30,7 @@ public class AuthResponse {
     public Long getUserId() {
         return userId;
     }
-    
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -34,16 +38,16 @@ public class AuthResponse {
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
-    
-    public void setRole(String role) {
+
+    public void setRole(Role role) {
         this.role = role;
     }
 }
