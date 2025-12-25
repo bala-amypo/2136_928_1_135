@@ -33,11 +33,11 @@ public class BroadcastLog {
     }
 
     // ===== CONSTRUCTORS =====
-
-    public BroadcastLog() {}
+    public BroadcastLog() {
+        this.deliveryStatus = "SENT"; // default
+    }
 
     // ===== GETTERS & SETTERS =====
-
     public Long getId() {
         return id;
     }
@@ -72,5 +72,9 @@ public class BroadcastLog {
 
     public void setDeliveryStatus(String deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public void setSentAt(LocalDateTime sentAt) {
+        this.sentAt = sentAt;
     }
 }

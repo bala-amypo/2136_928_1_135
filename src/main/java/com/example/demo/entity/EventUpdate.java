@@ -64,7 +64,7 @@ public class EventUpdate {
         return timestamp;
     }
 
-    // Optional: keep old methods for backward compatibility
+    // Optional helper methods (for backward compatibility)
     public void setUpdateContent(String message) {
         this.message = message;
     }
