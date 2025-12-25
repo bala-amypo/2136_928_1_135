@@ -29,30 +29,26 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event createEvent(Event event) {
-        if (event == null) {
-            throw new IllegalArgumentException("Event cannot be null");
-        }
-        return eventRepository.save(event);
-    }
-
-    @Override
-    public Event updateEvent(Long eventId, Event updatedEvent) {
-        Event existingEvent = getById(eventId);
-
-        existingEvent.setTitle(updatedEvent.getTitle());
-        existingEvent.setDescription(updatedEvent.getDescription());
-        existingEvent.setLocation(updatedEvent.getLocation());
-        existingEvent.setCategory(updatedEvent.getCategory());
-        existingEvent.setActive(updatedEvent.isActive());
-
-        return eventRepository.save(existingEvent);
-    }
-
-    @Override
     public Event getById(Long id) {
         return eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+    }
+
+    @Override
+    public List<Event> getAll() {
+        return eventRepository.findAll();
+    }
+
+    @Override
+    public void delete(Long id) {
+        Event event = getById(id);
+
+        if ((event.getSubscriptions() != null && !event.getSubscriptions().isEmpty()) ||
+            (event.getUpdates() != null && !event.getUpdates().isEmpty())) {
+            throw new IllegalStateException("Cannot delete Event with existing subscriptions or updates");
+        }
+
+        eventRepository.delete(event);
     }
 
     @Override
@@ -62,13 +58,24 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAll() {
-        return eventRepository.findAll();
+    public Event createEvent(Event event) {
+        return save(event);
+    }
+
+    @Override
+    public Event updateEvent(Long id, Event event) {
+        Event existing = getById(id);
+        existing.setTitle(event.getTitle());
+        existing.setDescription(event.getDescription());
+        existing.setLocation(event.getLocation());
+        existing.setCategory(event.getCategory());
+        existing.setPublisher(event.getPublisher());
+        return save(existing);
     }
 
     @Override
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        return getAll();
     }
 
     @Override
@@ -77,24 +84,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deactivateEvent(Long eventId) {
-        Event event = getById(eventId);
-        event.setActive(false);
-        eventRepository.save(event);
-    }
-
-    @Override
-    public void delete(Long id) {
+    public void deactivateEvent(Long id) {
         Event event = getById(id);
-
-        // RESTRICT delete if dependencies exist
-        if ((event.getSubscriptions() != null && !event.getSubscriptions().isEmpty()) ||
-            (event.getUpdates() != null && !event.getUpdates().isEmpty())) {
-            throw new IllegalStateException(
-                "Cannot delete Event with existing subscriptions or updates"
-            );
-        }
-
-        eventRepository.delete(event);
+        event.setActive(false);
+        save(event);
     }
 }

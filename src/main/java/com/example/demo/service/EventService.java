@@ -6,22 +6,24 @@ import com.example.demo.entity.User;
 
 public interface EventService {
 
-    // ✅ EXISTING (keep)
     Event save(Event event);
+
     Event getById(Long id);
+
     List<Event> getAll();
+
     void delete(Long id);
 
-    // 🔹 REQUIRED by EventController
+    // Additional methods for controller
     User getUserById(Long userId);
 
     Event createEvent(Event event);
 
-    Event updateEvent(Long eventId, Event event);
+    Event updateEvent(Long id, Event event);
 
     List<Event> getAllEvents();
 
     List<Event> getActiveEvents();
 
-    void deactivateEvent(Long eventId);
+    void deactivateEvent(Long id);
 }
