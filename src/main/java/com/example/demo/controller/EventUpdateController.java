@@ -21,12 +21,11 @@ public class EventUpdateController {
         this.service = service;
     }
 
-    // -------------------- PUBLISH NEW EVENT UPDATE --------------------
     @PostMapping
     @PreAuthorize("hasRole('PUBLISHER')")
     public ResponseEntity<EventUpdate> publishUpdate(@RequestBody EventUpdateRequest request) {
         EventUpdate update = new EventUpdate();
-        update.setEvent(service.getEventById(request.getEventId())); // Fetch Event entity
+        update.setEvent(service.getEventById(request.getEventId()));
         update.setUpdateContent(request.getUpdateContent());
         update.setUpdateType(request.getUpdateType());
 
@@ -34,7 +33,6 @@ public class EventUpdateController {
         return new ResponseEntity<>(savedUpdate, HttpStatus.CREATED);
     }
 
-    // -------------------- LIST ALL UPDATES FOR AN EVENT --------------------
     @GetMapping("/event/{eventId}")
     @PreAuthorize("hasRole('PUBLISHER') or hasRole('ADMIN') or hasRole('SUBSCRIBER')")
     public ResponseEntity<List<EventUpdate>> getUpdatesForEvent(@PathVariable Long eventId) {
@@ -42,7 +40,6 @@ public class EventUpdateController {
         return new ResponseEntity<>(updates, HttpStatus.OK);
     }
 
-    // -------------------- GET UPDATE BY ID --------------------
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('PUBLISHER') or hasRole('ADMIN') or hasRole('SUBSCRIBER')")
     public ResponseEntity<EventUpdate> getUpdateById(@PathVariable Long id) {
@@ -51,11 +48,17 @@ public class EventUpdateController {
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
-    // -------------------- LIST ALL UPDATES --------------------
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EventUpdate>> getAllUpdates() {
         List<EventUpdate> updates = service.getAllUpdates();
         return new ResponseEntity<>(updates, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PUBLISHER')")
+    public ResponseEntity<Void> deleteUpdate(@PathVariable Long id) {
+        service.deleteUpdate(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
