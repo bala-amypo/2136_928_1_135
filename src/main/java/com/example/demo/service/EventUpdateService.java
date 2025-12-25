@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.EventUpdate;
-
 import java.util.List;
 
 public interface EventUpdateService {
@@ -21,6 +20,6 @@ public interface EventUpdateService {
     // Delete an event update
     void deleteEventUpdate(long id);
 
-    // Record the delivery status of an update for a user
+    // Optional: record delivery (throw UnsupportedOperationException if BroadcastService doesn't support it)
     void recordDelivery(long userId, long eventUpdateId, boolean success);
 }
