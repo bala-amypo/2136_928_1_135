@@ -1,23 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.User;
+
 import java.util.List;
 import java.util.Optional;
-import com.example.demo.entity.User;
 
 public interface UserService {
 
-    // Register a new user
-    User register(User user);
+    User registerUser(User user);
 
-    // Get all users
+    User getUserById(Long id);
+
     List<User> getAllUsers();
 
-    // Find user by ID
-    Optional<User> findById(Long id);
-
-    // Update user by ID
-    User updateUser(Long id, User user);
-
-    // Delete user by ID
-    void delete(Long id);
+    Optional<User> findByEmail(String email);
 }
