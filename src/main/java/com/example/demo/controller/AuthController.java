@@ -29,17 +29,19 @@ public class AuthController {
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
 
-        // Convert role string from request to Role enum
+        // Convert role string to Role enum if provided
         if (request.getRole() != null) {
             Role role = Role.valueOf(request.getRole().toUpperCase());
             user.setRole(role);
         }
 
         User saved = userService.registerUser(user);
-        String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), saved.getRole());
+
+        String roleStr = saved.getRole() != null ? saved.getRole().name() : null;
+        String token = jwtUtil.generateToken(saved.getId(), saved.getEmail(), roleStr);
 
         return ResponseEntity.ok(
-                new AuthResponse(token, saved.getId(), saved.getEmail(), saved.getRole())
+                new AuthResponse(token, saved.getId(), saved.getEmail(), roleStr)
         );
     }
 
@@ -50,10 +52,11 @@ public class AuthController {
             throw new RuntimeException("User not found");
         }
 
-        String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
+        String roleStr = user.getRole() != null ? user.getRole().name() : null;
+        String token = jwtUtil.generateToken(user.getId(), user.getEmail(), roleStr);
 
         return ResponseEntity.ok(
-                new AuthResponse(token, user.getId(), user.getEmail(), user.getRole())
+                new AuthResponse(token, user.getId(), user.getEmail(), roleStr)
         );
     }
 }
