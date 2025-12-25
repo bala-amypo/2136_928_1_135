@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.EventUpdateRequest;
 import com.example.demo.entity.Event;
 import com.example.demo.entity.EventUpdate;
+import com.example.demo.entity.SeverityLevel;
 import com.example.demo.service.EventService;
 import com.example.demo.service.EventUpdateService;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,14 @@ public class EventUpdateController {
 
         EventUpdate update = new EventUpdate();
         update.setEvent(event);
-        update.setUpdateContent(request.getUpdateContent());
-        update.setUpdateType(request.getUpdateType());
+        update.setMessage(request.getUpdateContent());
+
+        // Convert string to enum, ensure it matches SeverityLevel names
+        try {
+            update.setSeverityLevel(SeverityLevel.valueOf(request.getUpdateType().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build(); // invalid severity type
+        }
 
         return ResponseEntity.ok(updateService.publishUpdate(update));
     }
