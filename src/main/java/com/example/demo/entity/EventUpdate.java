@@ -24,7 +24,7 @@ public class EventUpdate {
     private LocalDateTime timestamp;
 
     @PrePersist
-    public void onCreate() {  // ✅ should be public
+    public void onCreate() {
         this.timestamp = LocalDateTime.now();
     }
 
@@ -48,7 +48,8 @@ public class EventUpdate {
         return message;
     }
 
-    public void setMessage(String message) {
+    // Rename setter to match the old "setUpdateContent" usage
+    public void setUpdateContent(String message) {
         this.message = message;
     }
 
@@ -56,7 +57,8 @@ public class EventUpdate {
         return severityLevel;
     }
 
-    public void setSeverityLevel(SeverityLevel severityLevel) {
+    // Rename setter to match the old "setUpdateType" usage
+    public void setUpdateType(SeverityLevel severityLevel) {
         this.severityLevel = severityLevel;
     }
 
