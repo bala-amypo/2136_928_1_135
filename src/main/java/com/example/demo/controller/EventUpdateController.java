@@ -1,64 +1,46 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
+import com.example.demo.dto.EventUpdateRequest;
+import com.example.demo.entity.Event;
+import com.example.demo.entity.EventUpdate;
+import com.example.demo.service.EventService;
+import com.example.demo.service.EventUpdateService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dto.EventUpdateRequest;
-import com.example.demo.entity.EventUpdate;
-import com.example.demo.service.EventUpdateService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/updates")
 public class EventUpdateController {
 
-    private final EventUpdateService service;
+    private final EventUpdateService updateService;
+    private final EventService eventService;
 
-    public EventUpdateController(EventUpdateService service) {
-        this.service = service;
+    public EventUpdateController(EventUpdateService updateService, EventService eventService) {
+        this.updateService = updateService;
+        this.eventService = eventService;
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('PUBLISHER')")
-    public ResponseEntity<EventUpdate> publishUpdate(@RequestBody EventUpdateRequest request) {
+    public ResponseEntity<EventUpdate> publish(@RequestBody EventUpdateRequest request) {
+        Event event = eventService.getEventById(request.getEventId());
+
         EventUpdate update = new EventUpdate();
-        update.setEvent(service.getEventById(request.getEventId()));
+        update.setEvent(event);
         update.setUpdateContent(request.getUpdateContent());
         update.setUpdateType(request.getUpdateType());
 
-        EventUpdate savedUpdate = service.publishUpdate(update);
-        return new ResponseEntity<>(savedUpdate, HttpStatus.CREATED);
+        return ResponseEntity.ok(updateService.publishUpdate(update));
     }
 
     @GetMapping("/event/{eventId}")
-    @PreAuthorize("hasRole('PUBLISHER') or hasRole('ADMIN') or hasRole('SUBSCRIBER')")
-    public ResponseEntity<List<EventUpdate>> getUpdatesForEvent(@PathVariable Long eventId) {
-        List<EventUpdate> updates = service.getUpdatesForEvent(eventId);
-        return new ResponseEntity<>(updates, HttpStatus.OK);
+    public ResponseEntity<List<EventUpdate>> getByEvent(@PathVariable Long eventId) {
+        return ResponseEntity.ok(updateService.getUpdatesForEvent(eventId));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('PUBLISHER') or hasRole('ADMIN') or hasRole('SUBSCRIBER')")
-    public ResponseEntity<EventUpdate> getUpdateById(@PathVariable Long id) {
-        EventUpdate update = service.getUpdateById(id)
-                .orElseThrow(() -> new RuntimeException("Event update not found"));
-        return new ResponseEntity<>(update, HttpStatus.OK);
-    }
-
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<EventUpdate>> getAllUpdates() {
-        List<EventUpdate> updates = service.getAllUpdates();
-        return new ResponseEntity<>(updates, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PUBLISHER')")
-    public ResponseEntity<Void> deleteUpdate(@PathVariable Long id) {
-        service.deleteUpdate(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<EventUpdate> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(updateService.getUpdateById(id));
     }
 }
