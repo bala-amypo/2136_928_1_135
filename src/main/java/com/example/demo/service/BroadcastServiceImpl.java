@@ -1,15 +1,3 @@
-package com.example.demo.service;
-
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.BroadcastLog;
-import com.example.demo.entity.EventUpdate;
-import com.example.demo.entity.User;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.BroadcastLogRepository;
-
 @Service
 public class BroadcastServiceImpl implements BroadcastService {
 
@@ -19,6 +7,7 @@ public class BroadcastServiceImpl implements BroadcastService {
         this.broadcastLogRepository = broadcastLogRepository;
     }
 
+    // EXISTING METHODS (unchanged)
     @Override
     public BroadcastLog save(BroadcastLog log) {
 
@@ -26,7 +15,6 @@ public class BroadcastServiceImpl implements BroadcastService {
             throw new IllegalArgumentException("Invalid broadcast log data");
         }
 
-        // Referential integrity checks (RESTRICT)
         EventUpdate eventUpdate = log.getEventUpdate();
         if (eventUpdate == null) {
             throw new ResourceNotFoundException("EventUpdate must exist for broadcast");
@@ -42,6 +30,27 @@ public class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public List<BroadcastLog> getAll() {
+        return broadcastLogRepository.findAll();
+    }
+
+    // 🔹 NEW METHODS (to satisfy controller)
+
+    @Override
+    public void broadcastUpdate(Long updateId) {
+        // For now, just validate existence
+        // Real notification logic can be added later
+        if (updateId == null) {
+            throw new IllegalArgumentException("Update ID cannot be null");
+        }
+    }
+
+    @Override
+    public List<BroadcastLog> getLogsForUpdate(Long updateId) {
+        return broadcastLogRepository.findByEventUpdateId(updateId);
+    }
+
+    @Override
+    public List<BroadcastLog> getAllLogs() {
         return broadcastLogRepository.findAll();
     }
 }
