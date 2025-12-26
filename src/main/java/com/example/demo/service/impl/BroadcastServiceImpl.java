@@ -91,9 +91,11 @@ import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.BroadcastService;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Primary;
 import java.util.List;
 
 @Service
+@Primary
 public class BroadcastServiceImpl implements BroadcastService {
     private final BroadcastLogRepository broadcastLogRepository;
     private final SubscriptionRepository subscriptionRepository;
