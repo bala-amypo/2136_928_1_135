@@ -100,7 +100,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.updateEvent(id, event));
     }
 
-    @PATCH("/{id}/deactivate")
+    @PatchMapping("/{id}/deactivate") // Fixed annotation
     public ResponseEntity<Void> deactivateEvent(@PathVariable Long id) {
         eventService.deactivateEvent(id);
         return ResponseEntity.ok().build();
