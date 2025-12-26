@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(
@@ -22,31 +22,33 @@ public class Subscription {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    private LocalDateTime subscribedAt;
+    // ✅ FIX: Instant instead of LocalDateTime
+    @Column(nullable = false)
+    private Instant subscribedAt;
 
     @PrePersist
-    public void onCreate() { // made public for tests
-        subscribedAt = LocalDateTime.now();
+    public void onCreate() {
+        subscribedAt = Instant.now();
     }
 
     // ===== CONSTRUCTORS =====
     public Subscription() {}
 
-    // Convenience constructor for tests
+    // Constructor for tests
     public Subscription(User user, Event event) {
         this.user = user;
         this.event = event;
-        this.subscribedAt = LocalDateTime.now();
+        this.subscribedAt = Instant.now();
     }
 
     // ===== GETTERS & SETTERS =====
     public Long getId() { return id; }
     public User getUser() { return user; }
     public Event getEvent() { return event; }
-    public LocalDateTime getSubscribedAt() { return subscribedAt; }
+    public Instant getSubscribedAt() { return subscribedAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setUser(User user) { this.user = user; }
     public void setEvent(Event event) { this.event = event; }
-    public void setSubscribedAt(LocalDateTime subscribedAt) { this.subscribedAt = subscribedAt; }
+    public void setSubscribedAt(Instant subscribedAt) { this.subscribedAt = subscribedAt; }
 }
