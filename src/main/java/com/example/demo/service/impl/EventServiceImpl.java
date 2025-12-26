@@ -43,6 +43,12 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new RuntimeException("Event not found"));
     }
 
+    // ✅ REQUIRED by test cases
+    @Override
+    public Event getById(long id) {
+        return getEventById(id);
+    }
+
     @Override
     public List<Event> getActiveEvents() {
         return eventRepository.findByIsActiveTrue();
