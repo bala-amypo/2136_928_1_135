@@ -8,7 +8,6 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.List;
 
 @Configuration
@@ -21,23 +20,16 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Digital Event Broadcasting API")
-                        .version("1.0")
-                        .description("API for broadcasting digital events with JWT Security"))
-                // 1. Sets the custom Sandbox/Server URL
+                        .version("1.0"))
                 .servers(List.of(
                         new Server().url("https://9150.408procr.amypo.ai/")
                 ))
-                // 2. Adds the Global Authorize button requirement
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                // 3. Configures the Security Scheme as "Bearer"
+                .addSecurityRequirement(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
-                        .addSecuritySchemes(securitySchemeName, createAPIKeyScheme()));
-    }
-
-    private SecurityScheme createAPIKeyScheme() {
-        return new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .bearerFormat("JWT")
-                .scheme("bearer");
+                        .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                                .name(securitySchemeName)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
     }
 }
