@@ -107,7 +107,8 @@ public class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public void broadcastUpdate(Long updateId) {
-        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
+        EventUpdate update = eventUpdateRepository.findById(updateId)
+                .orElseThrow(() -> new RuntimeException("Update not found"));
         List<Subscription> subs = subscriptionRepository.findByEventId(update.getEvent().getId());
 
         for (Subscription sub : subs) {
@@ -124,10 +125,8 @@ public class BroadcastServiceImpl implements BroadcastService {
         return broadcastLogRepository.findByEventUpdateId(updateId);
     }
 
-    // ADD THIS METHOD to match the new BroadcastService interface and fix Test Line 793
     @Override
     public void recordDelivery(long updateId, long userId, boolean success) {
-        // Find the log entry for this specific update and user
         List<BroadcastLog> logs = broadcastLogRepository.findByEventUpdateId(updateId);
         
         logs.stream()
