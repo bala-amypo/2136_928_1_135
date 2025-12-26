@@ -8,6 +8,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.List;
 
 @Configuration
@@ -20,11 +21,13 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Digital Event Broadcasting API")
-                        .version("1.0"))
+                        .version("1.0")
+                        .description("API with JWT Bearer Token Authentication"))
                 .servers(List.of(
                         new Server().url("https://9150.408procr.amypo.ai/")
                 ))
-                .addSecurityRequirement(new SecurityRequirement().addList(securitySchemeName))
+                // FIX: Use addSecurityItem instead of addSecurityRequirement
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName, new SecurityScheme()
                                 .name(securitySchemeName)
