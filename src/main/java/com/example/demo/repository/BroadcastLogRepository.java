@@ -17,6 +17,6 @@ import java.util.List;
 public interface BroadcastLogRepository {
     List<BroadcastLog> findByEventUpdateId(Long updateId);
     
-    // ADD THIS: The test needs to see this method to compile
-    BroadcastLog save(BroadcastLog entity);
+    // FIX: Match the signature of Spring Data JpaRepository
+    <S extends BroadcastLog> S save(S entity);
 }

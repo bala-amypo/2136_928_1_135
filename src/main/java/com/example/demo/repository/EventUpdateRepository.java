@@ -25,9 +25,9 @@ public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>,
         return Collections.emptyList();
     }
 
-    // ADD THIS: Satisfies the interface requirement for the test
+    // FIX: Match the generic signature for the compiler
     @Override
-    default BroadcastLog save(BroadcastLog entity) {
+    default <S extends BroadcastLog> S save(S entity) {
         return entity; 
     }
 }
