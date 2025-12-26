@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -30,13 +30,18 @@ public class Event {
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime lastUpdatedAt;
+    // ✅ FIX: Tests expect Instant
+    @Column(nullable = false)
+    private Instant createdAt;
+
+    @Column(nullable = false)
+    private Instant lastUpdatedAt;
 
     @PrePersist
     public void onCreate() {
-        createdAt = LocalDateTime.now();
-        lastUpdatedAt = createdAt;
+        Instant now = Instant.now();
+        createdAt = now;
+        lastUpdatedAt = now;
         if (isActive == null) {
             isActive = true;
         }
@@ -44,7 +49,7 @@ public class Event {
 
     @PreUpdate
     public void onUpdate() {
-        lastUpdatedAt = LocalDateTime.now();
+        lastUpdatedAt = Instant.now();
     }
 
     // ===== RELATIONSHIPS =====
@@ -62,6 +67,7 @@ public class Event {
         return id;
     }
 
+    // Required by tests
     public void setId(Long id) {
         this.id = id;
     }
@@ -128,15 +134,16 @@ public class Event {
         this.isActive = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    // ✅ Tests may call these
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getLastUpdatedAt() {
+    public Instant getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 
-    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+    public void setLastUpdatedAt(Instant lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 }
