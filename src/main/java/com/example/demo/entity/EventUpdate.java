@@ -11,8 +11,8 @@ public class EventUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @Column(nullable = false, length = 1000)
@@ -21,17 +21,19 @@ public class EventUpdate {
     @Enumerated(EnumType.STRING)
     private SeverityLevel severityLevel;
 
-    // ✅ FIX: Instant instead of LocalDateTime
+    // ✅ Tests EXPECT Instant (NOT LocalDateTime)
     @Column(nullable = false)
     private Instant timestamp;
 
+    // ===== Lifecycle =====
     @PrePersist
-    public void onCreate() {
+    protected void onCreate() {
         this.timestamp = Instant.now();
     }
 
-    // ===== CONSTRUCTORS =====
-    public EventUpdate() {}
+    // ===== Constructors =====
+    public EventUpdate() {
+    }
 
     public EventUpdate(Event event, String message, SeverityLevel severityLevel) {
         this.event = event;
@@ -40,12 +42,14 @@ public class EventUpdate {
         this.timestamp = Instant.now();
     }
 
-    // ===== GETTERS & SETTERS =====
+    // ===== Getters & Setters =====
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) { // required by tests
+    // ✅ Required by tests
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -73,7 +77,7 @@ public class EventUpdate {
         this.severityLevel = severityLevel;
     }
 
-    // ✅ Tests expect this
+    // ✅ Tests call this
     public Instant getTimestamp() {
         return timestamp;
     }
@@ -82,7 +86,7 @@ public class EventUpdate {
         this.timestamp = timestamp;
     }
 
-    // ===== Backward compatibility helpers =====
+    // ===== Backward compatibility (older controller/service code) =====
     public void setUpdateContent(String message) {
         this.message = message;
     }
