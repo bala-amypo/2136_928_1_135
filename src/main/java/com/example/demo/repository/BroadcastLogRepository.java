@@ -16,5 +16,7 @@ import java.util.List;
 
 public interface BroadcastLogRepository {
     List<BroadcastLog> findByEventUpdateId(Long updateId);
-    // Remove the save method from here to stop the ambiguity
+    
+    // The test requires this method to exist in this interface
+    BroadcastLog save(BroadcastLog log);
 }
