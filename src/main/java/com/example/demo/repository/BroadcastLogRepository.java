@@ -14,10 +14,7 @@ package com.example.demo.repository;
 import com.example.demo.entity.BroadcastLog;
 import java.util.List;
 
-/**
- * Base interface to satisfy the Test's type requirements.
- * We removed JpaRepository from here to prevent the "different arguments" error.
- */
 public interface BroadcastLogRepository {
+    // This is just a contract for the Test and the Service
     List<BroadcastLog> findByEventUpdateId(Long updateId);
 }
