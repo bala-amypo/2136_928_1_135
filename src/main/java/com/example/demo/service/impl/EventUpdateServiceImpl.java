@@ -85,10 +85,10 @@
 // }
 
 
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.EventUpdate;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.EventUpdateRepository;
 import com.example.demo.service.EventUpdateService;
@@ -106,5 +106,18 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
         return eventUpdateRepository.findByEventIdOrderByTimestampAsc(eventId);
+    }
+
+    // Fix for Controller: publishUpdate
+    @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        return eventUpdateRepository.save(update);
+    }
+
+    // Fix for Controller: getUpdateById
+    @Override
+    public EventUpdate getUpdateById(Long id) {
+        return eventUpdateRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
     }
 }
