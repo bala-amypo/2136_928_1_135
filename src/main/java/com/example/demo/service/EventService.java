@@ -22,7 +22,6 @@
 
 
 package com.example.demo.service;
-
 import com.example.demo.entity.Event;
 import java.util.List;
 
@@ -32,4 +31,6 @@ public interface EventService {
     void deactivateEvent(Long id);
     List<Event> getActiveEvents();
     Event getById(Long id);
+    // Controller alias
+    Event getEventById(Long id);
 }

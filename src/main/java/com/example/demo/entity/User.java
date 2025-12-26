@@ -86,21 +86,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String email;
     private String password;
+    private String fullName; // Added for Controller
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private LocalDateTime createdAt;
 
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
-        if (this.role == null) {
-            this.role = Role.SUBSCRIBER; // Validation rule from Source 66
-        }
+        if (this.role == null) this.role = Role.SUBSCRIBER;
     }
 
     // Getters and Setters
@@ -110,6 +107,8 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
     public LocalDateTime getCreatedAt() { return createdAt; }

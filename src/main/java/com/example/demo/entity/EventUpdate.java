@@ -108,16 +108,15 @@ public class EventUpdate {
     private Event event;
 
     private LocalDateTime timestamp;
-    
+    private String message; // Added for Controller
+
     @Enumerated(EnumType.STRING)
     private SeverityLevel severityLevel;
 
     @PrePersist
     public void onCreate() {
         this.timestamp = LocalDateTime.now();
-        if (this.severityLevel == null) {
-            this.severityLevel = SeverityLevel.LOW; // Source 69
-        }
+        if (this.severityLevel == null) this.severityLevel = SeverityLevel.LOW;
     }
 
     // Getters and Setters
@@ -126,6 +125,8 @@ public class EventUpdate {
     public Event getEvent() { return event; }
     public void setEvent(Event event) { this.event = event; }
     public LocalDateTime getTimestamp() { return timestamp; }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
     public SeverityLevel getSeverityLevel() { return severityLevel; }
     public void setSeverityLevel(SeverityLevel severityLevel) { this.severityLevel = severityLevel; }
 }
