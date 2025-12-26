@@ -16,15 +16,13 @@
 
 //     void recordDelivery(long updateId, long userId, boolean status);
 // }
-package com.example.demo.repository;
+package com.example.demo.service;
 
 import com.example.demo.entity.BroadcastLog;
 import java.util.List;
 
-/**
- * Base interface used to satisfy the test requirements (Line 56).
- * This allows EventUpdateRepository to be cast as a BroadcastLogRepository.
- */
-public interface BroadcastLogRepository {
-    List<BroadcastLog> findByEventUpdateId(Long updateId);
+public interface BroadcastService {
+    void broadcastUpdate(Long updateId);
+    List<BroadcastLog> getLogsForUpdate(Long updateId);
+    void recordDelivery(long updateId, long userId, boolean success);
 }
