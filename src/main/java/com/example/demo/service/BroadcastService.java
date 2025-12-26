@@ -21,11 +21,24 @@ package com.example.demo.service;
 import com.example.demo.entity.BroadcastLog;
 import java.util.List;
 
+/**
+ * Interface for managing event update broadcasts to subscribers.
+ */
 public interface BroadcastService {
+
+    /**
+     * Triggers the broadcasting of an update to all subscribed users.
+     */
     void broadcastUpdate(Long updateId);
-    
+
+    /**
+     * Retrieves all delivery logs associated with a specific update.
+     */
     List<BroadcastLog> getLogsForUpdate(Long updateId);
 
-    // ADD THIS METHOD to fix the compilation error at line 793 of your Test file
+    /**
+     * Required by Test Line 793: Records the success or failure of a delivery 
+     * to a specific user.
+     */
     void recordDelivery(long updateId, long userId, boolean success);
 }

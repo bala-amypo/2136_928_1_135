@@ -9,13 +9,13 @@
 // }
 
 
-package com.example.demo.repository;
+ppackage com.example.demo.repository;
 
 import com.example.demo.entity.BroadcastLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BroadcastLogRepository extends JpaRepository<BroadcastLog, Long> {
+    // This is the method the Service and Test likely need
     List<BroadcastLog> findByEventUpdateId(Long updateId);
-    List<BroadcastLog> findBySubscriberId(Long subscriberId);
 }
