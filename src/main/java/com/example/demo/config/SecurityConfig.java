@@ -94,21 +94,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // 1. Disable CSRF as we are using JWT (Stateless)
             .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Allows H2 and Sandbox frames
+            
+            // 2. Allow frames (Required for H2 Console and some Sandbox Previewers)
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+            
+            // 3. Request Authorization Rules
             .authorizeHttpRequests(auth -> auth
-                // 1. Allow the root and simple-status for sandbox preview & health checks
-                .requestMatchers("/", "/simple-status", "/auth/**", "/h2-console/**").permitAll()
+                // Publicly accessible paths
+                .requestMatchers(
+                    "/", 
+                    "/error",
+                    "/auth/**", 
+                    "/simple-status", 
+                    "/h2-console/**",
+                    "/v3/api-docs/**", 
+                    "/swagger-ui/**", 
+                    "/swagger-ui.html"
+                ).permitAll()
                 
-                // 2. Specific authority requirements for Events
+                // Role-based access for Events
                 .requestMatchers("/api/events/**").hasAnyAuthority("ADMIN", "PUBLISHER")
                 
-                // 3. All other requests (Subscriptions, Updates, etc.) require a valid JWT
+                // All other requests require a valid JWT token
                 .anyRequest().authenticated()
             )
-            // 4. Ensure the session is STATELESS (critical for JWT)
+            
+            // 4. Set Session Management to Stateless
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // 5. Add our JWT filter before the standard UsernamePassword filter
+            
+            // 5. Add the JWT Filter before the standard Username/Password Filter
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
