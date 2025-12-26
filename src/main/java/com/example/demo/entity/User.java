@@ -21,15 +21,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role; // ADMIN / PUBLISHER / SUBSCRIBER
 
     private LocalDateTime createdAt;
 
+    // ✅ FIX: default values for tests
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
+
+        if (role == null) {
+            role = Role.SUBSCRIBER;
+        }
     }
 
     // ===== RELATIONSHIPS =====
@@ -60,7 +65,11 @@ public class User {
 
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
-    public void setRole(String roleStr) { this.role = Role.valueOf(roleStr); }
+
+    // Convenience for controllers/tests
+    public void setRole(String roleStr) {
+        this.role = Role.valueOf(roleStr.toUpperCase());
+    }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 }
