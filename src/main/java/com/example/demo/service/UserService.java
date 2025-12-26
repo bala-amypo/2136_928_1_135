@@ -6,7 +6,7 @@ import java.util.List;
 public interface UserService {
 
     // Register a new user
-    User registerUser(User user);
+    User register(User user);
     User registerUser(User user);
 
     // Find user by email
