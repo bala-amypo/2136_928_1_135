@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "event_updates")
@@ -21,11 +21,13 @@ public class EventUpdate {
     @Enumerated(EnumType.STRING)
     private SeverityLevel severityLevel;
 
-    private LocalDateTime timestamp;
+    // ✅ FIX: Instant instead of LocalDateTime
+    @Column(nullable = false)
+    private Instant timestamp;
 
     @PrePersist
     public void onCreate() {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = Instant.now();
     }
 
     // ===== CONSTRUCTORS =====
@@ -35,7 +37,7 @@ public class EventUpdate {
         this.event = event;
         this.message = message;
         this.severityLevel = severityLevel;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = Instant.now();
     }
 
     // ===== GETTERS & SETTERS =====
@@ -43,7 +45,7 @@ public class EventUpdate {
         return id;
     }
 
-    public void setId(Long id) { // added for tests
+    public void setId(Long id) { // required by tests
         this.id = id;
     }
 
@@ -71,11 +73,16 @@ public class EventUpdate {
         this.severityLevel = severityLevel;
     }
 
-    public LocalDateTime getTimestamp() {
+    // ✅ Tests expect this
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    // Optional helper methods for backward compatibility
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    // ===== Backward compatibility helpers =====
     public void setUpdateContent(String message) {
         this.message = message;
     }
