@@ -61,8 +61,7 @@
 //                 .setSigningKey(secretKey)
 //                 .parseClaimsJws(token)
 //                 .getBody();
-//     }
-// }
+//     }}
 
 package com.example.demo.security;
 
@@ -77,12 +76,30 @@ import java.util.function.Function;
 public class JwtUtil {
     private String secret = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 
+    // 1. Added empty constructor (Required by Spring and some test setups)
+    public JwtUtil() {}
+
+    // 2. Added constructor used by Test Line 58
+    public JwtUtil(String secret, int expiration) {
+        this.secret = secret;
+    }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public String getUsernameFromToken(String token) {
         return extractUsername(token);
+    }
+
+    // 3. Added method required by Test Line 657
+    public Long getUserIdFromToken(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
+
+    // 4. Added method required by Test Line 658 & 691
+    public String getRoleFromToken(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -112,6 +129,15 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    // 5. Overloaded validateToken for single argument (Required by Test Lines 656, 665, 685, 699)
+    public Boolean validateToken(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public Boolean validateToken(String token, String username) {

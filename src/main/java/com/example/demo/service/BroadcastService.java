@@ -23,5 +23,9 @@ import java.util.List;
 
 public interface BroadcastService {
     void broadcastUpdate(Long updateId);
+    
     List<BroadcastLog> getLogsForUpdate(Long updateId);
+
+    // ADD THIS METHOD to fix the compilation error at line 793 of your Test file
+    void recordDelivery(long updateId, long userId, boolean success);
 }

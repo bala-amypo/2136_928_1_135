@@ -123,4 +123,19 @@ public class BroadcastServiceImpl implements BroadcastService {
     public List<BroadcastLog> getLogsForUpdate(Long updateId) {
         return broadcastLogRepository.findByEventUpdateId(updateId);
     }
+
+    // ADD THIS METHOD to match the new BroadcastService interface and fix Test Line 793
+    @Override
+    public void recordDelivery(long updateId, long userId, boolean success) {
+        // Find the log entry for this specific update and user
+        List<BroadcastLog> logs = broadcastLogRepository.findByEventUpdateId(updateId);
+        
+        logs.stream()
+            .filter(log -> log.getSubscriber().getId().equals(userId))
+            .findFirst()
+            .ifPresent(log -> {
+                log.setDeliveryStatus(success ? DeliveryStatus.DELIVERED : DeliveryStatus.FAILED);
+                broadcastLogRepository.save(log);
+            });
+    }
 }
