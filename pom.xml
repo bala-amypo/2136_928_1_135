@@ -75,6 +75,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
@@ -109,14 +119,14 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
+                    <useModulePath>false</useModulePath>
+                    <threadCount>1</threadCount>
                     <properties>
                         <property>
                             <name>testjar</name>
                             <value>at-test-suite.jar</value>
                         </property>
                     </properties>
-                    <useModulePath>false</useModulePath>
-                    <threadCount>1</threadCount>
                 </configuration>
                 <dependencies>
                     <dependency>
