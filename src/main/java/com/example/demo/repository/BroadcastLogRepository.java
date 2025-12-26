@@ -16,7 +16,5 @@ import java.util.List;
 
 public interface BroadcastLogRepository {
     List<BroadcastLog> findByEventUpdateId(Long updateId);
-    
-    // FIX: Match the signature of Spring Data JpaRepository
-    <S extends BroadcastLog> S save(S entity);
+    // Remove the save method from here to stop the ambiguity
 }
