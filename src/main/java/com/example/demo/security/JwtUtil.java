@@ -1,41 +1,34 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private SecretKey key;
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
-    // ================= SPRING CONSTRUCTOR =================
-    public JwtUtil(@Value("${jwt.secret}") String secret) {
-        // Convert raw string → HMAC key (NO Base64 required)
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    // ================= TEST CONSTRUCTOR (HIDDEN TESTS) =================
-    public JwtUtil(String secret, long expirationTime) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    // ✅ REQUIRED by Spring (DO NOT REMOVE)
+    public JwtUtil() {
     }
 
     // ================= TOKEN GENERATION =================
     public String generateToken(Long id, String email, String role) {
         return Jwts.builder()
+                .setSubject(email)
                 .claim("id", id)
                 .claim("role", role)
-                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
@@ -44,18 +37,14 @@ public class JwtUtil {
         try {
             extractAllClaims(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
     // ================= EXTRACTION =================
-    public String getUsernameFromToken(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-
     public String getEmailFromToken(String token) {
-        return getUsernameFromToken(token);
+        return extractAllClaims(token).getSubject();
     }
 
     public Long getUserIdFromToken(String token) {
@@ -68,9 +57,8 @@ public class JwtUtil {
 
     // ================= INTERNAL =================
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
+        return Jwts.parser()
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
     }
