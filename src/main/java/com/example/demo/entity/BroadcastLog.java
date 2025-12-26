@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "broadcast_logs")
@@ -19,22 +19,29 @@ public class BroadcastLog {
     @JoinColumn(name = "subscriber_id", nullable = false)
     private User subscriber;
 
+    // ✅ FIX: enum instead of String
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String deliveryStatus; // PENDING / SENT / FAILED
+    private DeliveryStatus deliveryStatus;
 
-    private LocalDateTime sentAt;
+    // Timestamp of sending
+    @Column(nullable = false)
+    private Instant sentAt;
 
     @PrePersist
     protected void onCreate() {
-        sentAt = LocalDateTime.now();
+        if (sentAt == null) {
+            sentAt = Instant.now();
+        }
         if (deliveryStatus == null) {
-            deliveryStatus = "SENT";
+            deliveryStatus = DeliveryStatus.SENT;
         }
     }
 
     // ===== CONSTRUCTORS =====
     public BroadcastLog() {
-        this.deliveryStatus = "SENT"; // default
+        this.deliveryStatus = DeliveryStatus.SENT;
+        this.sentAt = Instant.now();
     }
 
     // ===== GETTERS & SETTERS =====
@@ -50,11 +57,11 @@ public class BroadcastLog {
         return subscriber;
     }
 
-    public String getDeliveryStatus() {
+    public DeliveryStatus getDeliveryStatus() {
         return deliveryStatus;
     }
 
-    public LocalDateTime getSentAt() {
+    public Instant getSentAt() {
         return sentAt;
     }
 
@@ -70,11 +77,12 @@ public class BroadcastLog {
         this.subscriber = subscriber;
     }
 
-    public void setDeliveryStatus(String deliveryStatus) {
+    // ✅ FIXED setter
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public void setSentAt(LocalDateTime sentAt) {
+    public void setSentAt(Instant sentAt) {
         this.sentAt = sentAt;
     }
 }
