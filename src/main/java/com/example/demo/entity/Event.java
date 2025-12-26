@@ -164,27 +164,27 @@ public class Event {
     private String description;
     private String location;
     private String category;
-    private boolean isActive = true; // Default per Source 38/127
 
     @ManyToOne
+    @JoinColumn(name = "publisher_id")
     private User publisher;
 
-    // Using Instant for timestamps as per Source 64 tests asking for Assert.assertNotNull(e.getLastUpdatedAt()) 
-    // and Helper mentioning LocalDateTime. Tests often map Instant/LocalDateTime interchangeably, 
-    // but Source 65 implies a time object.
+    private boolean isActive = true;
     private Instant createdAt;
     private Instant lastUpdatedAt;
+
+    public Event() {}
 
     @PrePersist
     public void onCreate() {
         this.createdAt = Instant.now();
         this.lastUpdatedAt = Instant.now();
-        this.isActive = true;
+        this.isActive = true; // Default state [cite: 128]
     }
 
     @PreUpdate
     public void onUpdate() {
-        this.lastUpdatedAt = Instant.now();
+        this.lastUpdatedAt = Instant.now(); // Updates on every change [cite: 128]
     }
 
     // Getters and Setters
@@ -198,10 +198,10 @@ public class Event {
     public void setLocation(String location) { this.location = location; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
     public User getPublisher() { return publisher; }
     public void setPublisher(User publisher) { this.publisher = publisher; }
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getLastUpdatedAt() { return lastUpdatedAt; }
 }

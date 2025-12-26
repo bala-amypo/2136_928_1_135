@@ -94,17 +94,26 @@ public class BroadcastLog {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "event_update_id")
     private EventUpdate eventUpdate;
 
     @ManyToOne
+    @JoinColumn(name = "subscriber_id")
     private User subscriber;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT; // Source 68
+    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT;
+
+    private LocalDateTime sentAt;
+
+    public BroadcastLog() {}
 
     @PrePersist
     public void onCreate() {
-        // Validation or defaults
+        this.sentAt = LocalDateTime.now();
+        if (this.deliveryStatus == null) {
+            this.deliveryStatus = DeliveryStatus.SENT; // Default status 
+        }
     }
 
     // Getters and Setters
@@ -116,4 +125,5 @@ public class BroadcastLog {
     public void setSubscriber(User subscriber) { this.subscriber = subscriber; }
     public DeliveryStatus getDeliveryStatus() { return deliveryStatus; }
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) { this.deliveryStatus = deliveryStatus; }
+    public LocalDateTime getSentAt() { return sentAt; }
 }

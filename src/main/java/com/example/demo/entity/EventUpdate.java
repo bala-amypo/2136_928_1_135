@@ -105,18 +105,23 @@ public class EventUpdate {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
 
+    private String updateContent;
     private LocalDateTime timestamp;
-    private String message; // Added for Controller
 
     @Enumerated(EnumType.STRING)
     private SeverityLevel severityLevel;
 
+    public EventUpdate() {}
+
     @PrePersist
     public void onCreate() {
         this.timestamp = LocalDateTime.now();
-        if (this.severityLevel == null) this.severityLevel = SeverityLevel.LOW;
+        if (this.severityLevel == null) {
+            this.severityLevel = SeverityLevel.LOW; // Default severity 
+        }
     }
 
     // Getters and Setters
@@ -124,9 +129,9 @@ public class EventUpdate {
     public void setId(Long id) { this.id = id; }
     public Event getEvent() { return event; }
     public void setEvent(Event event) { this.event = event; }
+    public String getUpdateContent() { return updateContent; }
+    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
     public LocalDateTime getTimestamp() { return timestamp; }
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
     public SeverityLevel getSeverityLevel() { return severityLevel; }
     public void setSeverityLevel(SeverityLevel severityLevel) { this.severityLevel = severityLevel; }
 }
