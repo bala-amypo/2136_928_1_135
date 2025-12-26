@@ -7,7 +7,6 @@ import java.util.List;
 
 @Repository
 public interface JpaBroadcastLogRepository extends JpaRepository<BroadcastLog, Long>, BroadcastLogRepository {
-    
     @Override
     List<BroadcastLog> findByEventUpdateId(Long updateId);
 }

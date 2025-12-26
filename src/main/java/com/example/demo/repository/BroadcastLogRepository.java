@@ -15,6 +15,8 @@ import com.example.demo.entity.BroadcastLog;
 import java.util.List;
 
 public interface BroadcastLogRepository {
-    // This is just a contract for the Test and the Service
     List<BroadcastLog> findByEventUpdateId(Long updateId);
+    
+    // ADD THIS: The test needs to see this method to compile
+    BroadcastLog save(BroadcastLog entity);
 }
