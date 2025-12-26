@@ -27,9 +27,20 @@ import com.example.demo.entity.Event;
 import java.util.List;
 
 public interface EventService {
+    
+    // Core CRUD methods
     Event createEvent(Event event);
+    
     Event getById(Long id);
-    List<Event> getActiveEvents();
-    Event updateEvent(Long id, Event event);
+    
+    Event updateEvent(Long id, Event eventDetails);
+    
     void deactivateEvent(Long id);
+
+    // Filter and Search methods (Required by your test file)
+    List<Event> getActiveEvents();
+    
+    List<Event> getEventsByCategory(String category);
+    
+    List<Event> searchEventsByLocation(String location);
 }
