@@ -27,6 +27,13 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // ✅ REQUIRED by test cases
+    @Override
+    public User register(User user) {
+        return registerUser(user);
+    }
+
+    // existing method (DO NOT REMOVE)
     @Override
     public User registerUser(User user) {
         if (passwordEncoder != null) {
