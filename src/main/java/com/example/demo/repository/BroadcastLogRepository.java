@@ -9,7 +9,7 @@
 // }
 
 
-ppackage com.example.demo.repository;
+package com.example.demo.repository;
 
 import com.example.demo.entity.BroadcastLog;
 import org.springframework.data.jpa.repository.JpaRepository;
