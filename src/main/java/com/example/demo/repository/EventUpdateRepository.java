@@ -14,9 +14,7 @@ import com.example.demo.entity.EventUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-// 1. Remove "extends BroadcastLogRepository" from here 
-// because it causes the JpaRepository conflict.
-public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long> {
-    
+// By adding BroadcastLogRepository here, line 56 in your test will finally compile!
+public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>, BroadcastLogRepository {
     List<EventUpdate> findByEventIdOrderByTimestampAsc(Long eventId);
 }
