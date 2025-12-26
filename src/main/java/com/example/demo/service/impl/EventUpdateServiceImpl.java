@@ -95,26 +95,31 @@ import com.example.demo.service.EventUpdateService;
 import java.util.List;
 
 public class EventUpdateServiceImpl implements EventUpdateService {
-    private EventUpdateRepository eventUpdateRepository;
-    private EventRepository eventRepository;
+    private final EventUpdateRepository eventUpdateRepository;
+    private final EventRepository eventRepository;
 
     public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository, EventRepository eventRepository) {
         this.eventUpdateRepository = eventUpdateRepository;
         this.eventRepository = eventRepository;
     }
 
+    // This method is required by the TEST CASE (test.txt)
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
         return eventUpdateRepository.findByEventIdOrderByTimestampAsc(eventId);
     }
 
-    // Fix for Controller: publishUpdate
+    // This method is required by the CONTROLLER (EventUpdateController)
     @Override
     public EventUpdate publishUpdate(EventUpdate update) {
+        // Business logic: ensure the event exists before updating
+        if (!eventRepository.existsById(update.getEvent().getId())) {
+            throw new ResourceNotFoundException("Event not found");
+        }
         return eventUpdateRepository.save(update);
     }
 
-    // Fix for Controller: getUpdateById
+    // This method is required by the CONTROLLER (EventUpdateController)
     @Override
     public EventUpdate getUpdateById(Long id) {
         return eventUpdateRepository.findById(id)
