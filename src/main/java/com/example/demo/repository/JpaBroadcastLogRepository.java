@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaBroadcastLogRepository extends JpaRepository<BroadcastLog, Long>, BroadcastLogRepository {
-    // Inherits save() from JpaRepository and findByEventUpdateId from the bridge
+    // No changes needed here, it inherits the correct save() now
 }

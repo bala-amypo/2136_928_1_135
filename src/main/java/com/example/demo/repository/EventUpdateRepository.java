@@ -16,18 +16,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Collections;
 
-public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>, JpaBroadcastLogRepository {
+public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>, BroadcastLogRepository {
     
     List<EventUpdate> findByEventIdOrderByTimestampAsc(Long eventId);
 
-    // Provide dummy implementations so Spring doesn't try to create database queries for these
     @Override
     default List<BroadcastLog> findByEventUpdateId(Long updateId) {
         return Collections.emptyList();
     }
 
+    // Default implementation to satisfy the interface requirement
     @Override
-    default BroadcastLog save(BroadcastLog entity) {
+    default <S extends BroadcastLog> S save(S entity) {
         return entity;
     }
 }

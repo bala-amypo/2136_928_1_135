@@ -17,6 +17,7 @@ import java.util.List;
 public interface BroadcastLogRepository {
     List<BroadcastLog> findByEventUpdateId(Long updateId);
     
-    // The test requires this method to exist in this interface
-    BroadcastLog save(BroadcastLog log);
+    // This EXACT signature is required to stop the "ambiguous" error 
+    // and satisfy the Mockito call: Mockito.any(BroadcastLog.class)
+    <S extends BroadcastLog> S save(S entity);
 }
