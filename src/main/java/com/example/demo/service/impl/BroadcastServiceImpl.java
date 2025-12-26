@@ -90,28 +90,37 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.BroadcastService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class BroadcastServiceImpl implements BroadcastService {
-    private EventUpdateRepository eventUpdateRepo;
-    private SubscriptionRepository subRepo;
-    private BroadcastLogRepository logRepo;
+    private final BroadcastLogRepository broadcastLogRepository;
+    private final SubscriptionRepository subscriptionRepository;
+    private final EventUpdateRepository eventUpdateRepository;
 
-    public BroadcastServiceImpl(EventUpdateRepository e, SubscriptionRepository s, BroadcastLogRepository l) {
-        this.eventUpdateRepo = e; this.subRepo = s; this.logRepo = l;
+    public BroadcastServiceImpl(BroadcastLogRepository blRepo, SubscriptionRepository sRepo, EventUpdateRepository euRepo) {
+        this.broadcastLogRepository = blRepo;
+        this.subscriptionRepository = sRepo;
+        this.eventUpdateRepository = euRepo;
     }
 
-    @Override public void broadcastUpdate(Long updateId) {
-        EventUpdate update = eventUpdateRepo.findById(updateId).orElseThrow();
-        List<Subscription> subs = subRepo.findByEventId(update.getEvent().getId());
+    @Override
+    public void broadcastUpdate(Long updateId) {
+        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
+        List<Subscription> subs = subscriptionRepository.findByEventId(update.getEvent().getId());
+
         for (Subscription sub : subs) {
             BroadcastLog log = new BroadcastLog();
             log.setEventUpdate(update);
             log.setSubscriber(sub.getUser());
-            logRepo.save(log);
+            log.setDeliveryStatus(DeliveryStatus.SENT);
+            broadcastLogRepository.save(log);
         }
     }
-    @Override public List<BroadcastLog> getLogsForUpdate(Long updateId) { return logRepo.findByEventUpdateId(updateId); }
-    @Override public void triggerBroadcast(Long updateId) { broadcastUpdate(updateId); }
-    @Override public void recordDelivery(Long uId, Long sId, boolean success) { /* implementation */ }
+
+    @Override
+    public List<BroadcastLog> getLogsForUpdate(Long updateId) {
+        return broadcastLogRepository.findByEventUpdateId(updateId);
+    }
 }

@@ -84,45 +84,40 @@
 //     }
 // }
 
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.EventUpdate;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.EventUpdateRepository;
 import com.example.demo.service.EventUpdateService;
+import com.example.demo.service.BroadcastService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class EventUpdateServiceImpl implements EventUpdateService {
     private final EventUpdateRepository eventUpdateRepository;
-    private final EventRepository eventRepository;
+    private final BroadcastService broadcastService;
 
-    public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository, EventRepository eventRepository) {
-        this.eventUpdateRepository = eventUpdateRepository;
-        this.eventRepository = eventRepository;
+    public EventUpdateServiceImpl(EventUpdateRepository repo, BroadcastService broadcastService) {
+        this.eventUpdateRepository = repo;
+        this.broadcastService = broadcastService;
     }
 
-    // This method is required by the TEST CASE (test.txt)
+    @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        EventUpdate saved = eventUpdateRepository.save(update);
+        broadcastService.broadcastUpdate(saved.getId()); // Trigger notification
+        return saved;
+    }
+
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
         return eventUpdateRepository.findByEventIdOrderByTimestampAsc(eventId);
     }
 
-    // This method is required by the CONTROLLER (EventUpdateController)
-    @Override
-    public EventUpdate publishUpdate(EventUpdate update) {
-        // Business logic: ensure the event exists before updating
-        if (!eventRepository.existsById(update.getEvent().getId())) {
-            throw new ResourceNotFoundException("Event not found");
-        }
-        return eventUpdateRepository.save(update);
-    }
-
-    // This method is required by the CONTROLLER (EventUpdateController)
     @Override
     public EventUpdate getUpdateById(Long id) {
-        return eventUpdateRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
+        return eventUpdateRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Update not found"));
     }
 }
