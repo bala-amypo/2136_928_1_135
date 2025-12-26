@@ -95,14 +95,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers.frameOptions(frame -> frame.disable())) // Allows H2 and Sandbox frames
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/simple-status", "/h2-console/**").permitAll()
+                // 1. Allow the root and simple-status for sandbox preview & health checks
+                .requestMatchers("/", "/simple-status", "/auth/**", "/h2-console/**").permitAll()
+                
+                // 2. Specific authority requirements for Events
                 .requestMatchers("/api/events/**").hasAnyAuthority("ADMIN", "PUBLISHER")
+                
+                // 3. All other requests (Subscriptions, Updates, etc.) require a valid JWT
                 .anyRequest().authenticated()
             )
+            // 4. Ensure the session is STATELESS (critical for JWT)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())); // For H2 Console if used
+            // 5. Add our JWT filter before the standard UsernamePassword filter
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
