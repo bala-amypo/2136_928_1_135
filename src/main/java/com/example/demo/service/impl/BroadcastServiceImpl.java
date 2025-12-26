@@ -97,11 +97,14 @@ import java.util.List;
 @Service
 @Primary
 public class BroadcastServiceImpl implements BroadcastService {
-    private final BroadcastLogRepository broadcastLogRepository;
+    // 1. Change this to JpaBroadcastLogRepository so .save() exists
+    private final JpaBroadcastLogRepository broadcastLogRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final EventUpdateRepository eventUpdateRepository;
 
-    public BroadcastServiceImpl(BroadcastLogRepository blRepo, SubscriptionRepository sRepo, EventUpdateRepository euRepo) {
+    public BroadcastServiceImpl(JpaBroadcastLogRepository blRepo, 
+                                SubscriptionRepository sRepo, 
+                                EventUpdateRepository euRepo) {
         this.broadcastLogRepository = blRepo;
         this.subscriptionRepository = sRepo;
         this.eventUpdateRepository = euRepo;
@@ -118,6 +121,7 @@ public class BroadcastServiceImpl implements BroadcastService {
             log.setEventUpdate(update);
             log.setSubscriber(sub.getUser());
             log.setDeliveryStatus(DeliveryStatus.SENT);
+            // This will now work because JpaBroadcastLogRepository has .save()
             broadcastLogRepository.save(log);
         }
     }

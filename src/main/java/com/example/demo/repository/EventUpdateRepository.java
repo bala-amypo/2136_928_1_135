@@ -14,7 +14,7 @@ import com.example.demo.entity.EventUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-// By adding BroadcastLogRepository here, line 56 in your test will finally compile!
+// Now this is compatible with the type the test expects!
 public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>, BroadcastLogRepository {
     List<EventUpdate> findByEventIdOrderByTimestampAsc(Long eventId);
 }
