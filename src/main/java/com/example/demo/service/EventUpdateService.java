@@ -33,7 +33,7 @@ import com.example.demo.entity.EventUpdate;
 import java.util.List;
 
 public interface EventUpdateService {
-    List<EventUpdate> getUpdatesForEvent(Long eventId);
     EventUpdate publishUpdate(EventUpdate update);
+    List<EventUpdate> getUpdatesForEvent(Long eventId);
     EventUpdate getUpdateById(Long id);
 }
