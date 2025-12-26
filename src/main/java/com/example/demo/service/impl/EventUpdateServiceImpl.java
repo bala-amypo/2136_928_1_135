@@ -83,7 +83,6 @@
 //         throw new UnsupportedOperationException("recordDelivery not supported");
 //     }
 // }
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.EventUpdate;
@@ -107,7 +106,8 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     @Override
     public EventUpdate publishUpdate(EventUpdate update) {
         EventUpdate saved = eventUpdateRepository.save(update);
-        broadcastService.broadcastUpdate(saved.getId()); // Trigger notification
+        // Trigger notification using the saved ID
+        broadcastService.broadcastUpdate(saved.getId()); 
         return saved;
     }
 
@@ -118,6 +118,7 @@ public class EventUpdateServiceImpl implements EventUpdateService {
 
     @Override
     public EventUpdate getUpdateById(Long id) {
-        return eventUpdateRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Update not found"));
+        return eventUpdateRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Update not found"));
     }
 }

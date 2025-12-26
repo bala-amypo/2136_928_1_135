@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/broadcasts")
+@RequestMapping("/api/broadcast")
 public class BroadcastController {
     private final BroadcastService broadcastService;
 
@@ -45,7 +45,7 @@ public class BroadcastController {
         this.broadcastService = broadcastService;
     }
 
-    @PostMapping("/trigger/{updateId}")
+    @PostMapping("/{updateId}")
     public ResponseEntity<Void> triggerBroadcast(@PathVariable Long updateId) {
         broadcastService.broadcastUpdate(updateId);
         return ResponseEntity.ok().build();
