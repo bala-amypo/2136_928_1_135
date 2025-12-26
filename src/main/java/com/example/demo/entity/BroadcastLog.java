@@ -19,12 +19,10 @@ public class BroadcastLog {
     @JoinColumn(name = "subscriber_id", nullable = false)
     private User subscriber;
 
-    // ✅ FIX: enum instead of String
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DeliveryStatus deliveryStatus;
 
-    // Timestamp of sending
     @Column(nullable = false)
     private Instant sentAt;
 
@@ -38,13 +36,11 @@ public class BroadcastLog {
         }
     }
 
-    // ===== CONSTRUCTORS =====
     public BroadcastLog() {
         this.deliveryStatus = DeliveryStatus.SENT;
         this.sentAt = Instant.now();
     }
 
-    // ===== GETTERS & SETTERS =====
     public Long getId() {
         return id;
     }
@@ -77,7 +73,6 @@ public class BroadcastLog {
         this.subscriber = subscriber;
     }
 
-    // ✅ FIXED setter
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
