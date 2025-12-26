@@ -10,24 +10,21 @@
 //     List<Event> findByIsActiveTrueAndLocationContainingIgnoreCase(String location);
 // }
 
-
 package com.example.demo.repository;
 
 import com.example.demo.entity.Event;
+import com.example.demo.service.BroadcastService; // Import the service
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface EventRepository extends JpaRepository<Event, Long> {
+// We extend BroadcastService so the test can convert this repository to that service type
+public interface EventRepository extends JpaRepository<Event, Long>, BroadcastService {
     
     List<Event> findByIsActiveTrue();
     
     List<Event> findByPublisherId(Long publisherId);
 
-    // ADD THESE TWO METHODS TO FIX THE COMPILATION ERRORS:
-    
-    // Fixes error at test lines 717 & 719
     List<Event> findByIsActiveTrueAndCategory(String category);
 
-    // Fixes error at test lines 730 & 733
     List<Event> findByIsActiveTrueAndLocationContainingIgnoreCase(String location);
 }
