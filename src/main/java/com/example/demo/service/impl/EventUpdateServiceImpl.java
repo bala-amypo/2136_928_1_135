@@ -91,9 +91,11 @@ import com.example.demo.repository.EventUpdateRepository;
 import com.example.demo.service.EventUpdateService;
 import com.example.demo.service.BroadcastService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class EventUpdateServiceImpl implements EventUpdateService {
     private final EventUpdateRepository eventUpdateRepository;
     private final BroadcastService broadcastService;

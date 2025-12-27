@@ -73,9 +73,11 @@ import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EventService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class EventServiceImpl implements EventService {
     
     private final EventRepository eventRepository;
