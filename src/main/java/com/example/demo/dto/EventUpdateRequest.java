@@ -36,9 +36,9 @@
 package com.example.demo.dto;
 
 public class EventUpdateRequest {
-    private Long eventId;         // required; target Event id [cite: 246, 280]
-    private String updateContent; // required [cite: 246, 280]
-    private String updateType;    // INFO, WARNING, or CRITICAL [cite: 246, 280]
+    private Long eventId;         
+    private String updateContent; 
+    private String updateType;    
 
     // Getters and Setters
     public Long getEventId() { return eventId; }

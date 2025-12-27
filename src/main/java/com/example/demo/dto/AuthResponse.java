@@ -68,10 +68,10 @@
 package com.example.demo.dto;
 
 public class AuthResponse {
-    private String token; // required 
-    private Long userId;  // required 
-    private String email; // required 
-    private String role;  // required 
+    private String token; 
+    private Long userId;  
+    private String email; 
+    private String role;  
 
     public AuthResponse(String token, Long userId, String email, String role) {
         this.token = token;
@@ -80,7 +80,7 @@ public class AuthResponse {
         this.role = role;
     }
 
-    // Getters
+    
     public String getToken() { return token; }
     public Long getUserId() { return userId; }
     public String getEmail() { return email; }

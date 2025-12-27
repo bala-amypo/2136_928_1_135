@@ -52,11 +52,11 @@
 package com.example.demo.dto;
 
 public class EventRequest {
-    private String title;       // required 
-    private String description; // required 
-    private String location;    // required 
-    private String category;    // required (e.g., WEATHER, TRAFFIC) 
-    private Long publisherId;   // required; User id of ADMIN/PUBLISHER 
+    private String title;       
+    private String description; 
+    private String location;    
+    private String category;    
+    private Long publisherId;   
 
     // Getters and Setters
     public String getTitle() { return title; }
