@@ -93,10 +93,12 @@ import com.example.demo.service.BroadcastService;
 import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
 @Primary
+@Transactional
 public class BroadcastServiceImpl implements BroadcastService {
 
     private EventUpdateRepository eventUpdateRepository;
