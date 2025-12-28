@@ -1,23 +1,4 @@
-// package com.example.demo.service;
 
-// import com.example.demo.entity.Subscription;
-// import java.util.List;
-
-// public interface SubscriptionService {
-
-//     Subscription subscribe(Long userId, Long eventId);
-
-//     void unsubscribe(Long userId, Long eventId);
-
-//     List<Subscription> getSubscriptionsForUser(Long userId);
-
-//     boolean checkSubscription(Long userId, Long eventId);
-
-//     // Methods expected by tests
-//     boolean isSubscribed(long userId, long eventId);
-
-//     List<Subscription> getUserSubscriptions(long userId);
-// }
 package com.example.demo.service;
 
 import com.example.demo.entity.Subscription;
@@ -28,7 +9,7 @@ public interface SubscriptionService {
     void unsubscribe(Long userId, Long eventId);
     boolean isSubscribed(Long userId, Long eventId);
     List<Subscription> getUserSubscriptions(Long userId);
-    // Controller aliases
+    
     List<Subscription> getSubscriptionsForUser(Long userId);
     boolean checkSubscription(Long userId, Long eventId);
 }
