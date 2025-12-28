@@ -26,7 +26,7 @@ public class SwaggerConfig {
                 .servers(List.of(
                         new Server().url("https://9150.408procr.amypo.ai/")
                 ))
-                // FIX: Use addSecurityItem instead of addSecurityRequirement
+                
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName, new SecurityScheme()
