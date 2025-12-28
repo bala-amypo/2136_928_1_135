@@ -1,78 +1,4 @@
-// package com.example.demo.entity;
 
-// import jakarta.persistence.*;
-// import java.time.LocalDateTime;
-// import java.util.List;
-
-// @Entity
-// @Table(name = "users")
-// public class User {
-
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     @Column(nullable = false)
-//     private String fullName;
-
-//     @Column(nullable = false, unique = true)
-//     private String email;
-
-//     @Column(nullable = false)
-//     private String password;
-
-//     @Enumerated(EnumType.STRING)
-//     @Column(nullable = false)
-//     private Role role; // ADMIN / PUBLISHER / SUBSCRIBER
-
-//     private LocalDateTime createdAt;
-
-//     // ✅ FIX: default values for tests
-//     @PrePersist
-//     public void onCreate() {
-//         createdAt = LocalDateTime.now();
-
-//         if (role == null) {
-//             role = Role.SUBSCRIBER;
-//         }
-//     }
-
-//     // ===== RELATIONSHIPS =====
-//     @OneToMany(mappedBy = "publisher")
-//     private List<Event> events;
-
-//     @OneToMany(mappedBy = "user")
-//     private List<Subscription> subscriptions;
-
-//     @OneToMany(mappedBy = "subscriber")
-//     private List<BroadcastLog> broadcastLogs;
-
-//     // ===== CONSTRUCTORS =====
-//     public User() {}
-
-//     // ===== GETTERS & SETTERS =====
-//     public Long getId() { return id; }
-//     public void setId(Long id) { this.id = id; }
-
-//     public String getFullName() { return fullName; }
-//     public void setFullName(String fullName) { this.fullName = fullName; }
-
-//     public String getEmail() { return email; }
-//     public void setEmail(String email) { this.email = email; }
-
-//     public String getPassword() { return password; }
-//     public void setPassword(String password) { this.password = password; }
-
-//     public Role getRole() { return role; }
-//     public void setRole(Role role) { this.role = role; }
-
-//     // Convenience for controllers/tests
-//     public void setRole(String roleStr) {
-//         this.role = Role.valueOf(roleStr.toUpperCase());
-//     }
-
-//     public LocalDateTime getCreatedAt() { return createdAt; }
-// }
 
 package com.example.demo.entity;
 
@@ -103,7 +29,7 @@ public class User {
 
     public User() {}
 
-    // All-args constructor for requirements [cite: 125]
+    
     public User(Long id, String fullName, String email, String password, Role role, LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
@@ -117,11 +43,11 @@ public class User {
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
         if (this.role == null) {
-            this.role = Role.SUBSCRIBER; // Default role [cite: 126]
+            this.role = Role.SUBSCRIBER; 
         }
     }
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getFullName() { return fullName; }
