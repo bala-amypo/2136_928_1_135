@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaBroadcastLogRepository extends JpaRepository<BroadcastLog, Long>, BroadcastLogRepository {
-    // No changes needed here, it inherits the correct save() now
+    
 }

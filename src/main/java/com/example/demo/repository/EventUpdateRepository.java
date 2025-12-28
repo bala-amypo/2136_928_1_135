@@ -1,12 +1,4 @@
-// package com.example.demo.repository;
 
-// import com.example.demo.entity.EventUpdate;
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import java.util.List;
-
-// public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long> {
-//     List<EventUpdate> findByEventIdOrderByTimestampAsc(Long eventId);
-// }
 
 package com.example.demo.repository;
 
@@ -25,7 +17,7 @@ public interface EventUpdateRepository extends JpaRepository<EventUpdate, Long>,
         return Collections.emptyList();
     }
 
-    // Default implementation to satisfy the interface requirement
+    
     @Override
     default <S extends BroadcastLog> S save(S entity) {
         return entity;
